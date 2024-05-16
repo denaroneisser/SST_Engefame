@@ -28,7 +28,7 @@ Funções de GET/SET para a Tabela Historico_Treinamentos
 function setHistoricoTreinamento($H_Treinamentos_idTreinamento,$H_Funcionarios_CPF,$H_Instrutor,$H_Data_Realizacao,$H_Data_de_Validade,$H_Comprovacao,$H_Modalidade,$H_CargaHoraria,$H_Pago,$H_Valor_Por_Pessoa){
 //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
-    // CRIANDO O INSERT PARA INCLUIR CATEGORIA
+    // CRIANDO O INSERT PARA INCLUIR HISTORICO TREINAMENTO
     $setHistoricoTreinamentoSQL = "INSERT INTO Historico_Treinamentos (Treinamentos_idTreinamento,Funcionarios_CPF,Instrutor,Data_Realizacao,Data_Validade,Comprovacao,Modalidade,CargaHoraria,Pago,Valor_Por_Pessoa) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
     $setHistoricoTreinamentoStament = $pdo->prepare($setHistoricoTreinamentoSQL); 
      // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
@@ -57,11 +57,11 @@ function setHistoricoTreinamento($H_Treinamentos_idTreinamento,$H_Funcionarios_C
 
 
 //FUNÇÃO DE ALTERAR TREINAMENTO NO BANCO DE DADOS
-function setAlterarHistoricoTreinamento($H_idHistorico_Treinamento,$H_Treinamentos_idTreinamento,$H_Funcionarios_CPF,$H_Instrutor,$H_Data_Realizacao,$H_Data_de_Validade,$H_Comprovacao,$H_Modalidade,$H_CargaHoraria,$H_Pago,$H_Valor_Por_Pessoa){
+function setHistoricoTreinamentoAlterar($H_idHistorico_Treinamento,$H_Treinamentos_idTreinamento,$H_Funcionarios_CPF,$H_Instrutor,$H_Data_Realizacao,$H_Data_de_Validade,$H_Comprovacao,$H_Modalidade,$H_CargaHoraria,$H_Pago,$H_Valor_Por_Pessoa){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
         require "Conexao.php";
-                // CRIANDO O INSERT PARA INCLUIR CATEGORIA
-                $setAlterarHistoricoTreinamentoSQL = "UPDATE Historico_Treinamentos SET Treinamentos_idTreinamento= ?,Funcionarios_CPF= ?,Instrutor= ?,Data_Realizacao= ?,Data_Validade= ?,Comprovacao= ?,Modalidade= ?,CargaHoraria= ?,Pago= ?,Valor_Por_Pessoa ?) WHERE idHistorico_treinamento= ?";
+                // CRIANDO O UPDATE PARA ATUALIZAR UMA TURMA JA EXISTENTE
+                $setAlterarHistoricoTreinamentoSQL = "UPDATE Historico_Treinamentos SET Treinamentos_idTreinamento= ?,Funcionarios_CPF= ?,Instrutor= ?,Data_Realizacao= ?,Data_Validade= ?,Comprovacao= ?,Modalidade= ?,CargaHoraria= ?,Pago= ?,Valor_Por_Pessoa ?) WHERE idHistorico_Treinamento= ?";
                 $setAlterarHistoricoTreinamentoStament = $pdo->prepare($setAlterarHistoricoTreinamentoSQL); 
                 // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
                 $setAlterarHistoricoTreinamentoStament->bindParam(1, $H_Treinamentos_idTreinamento);
@@ -89,21 +89,21 @@ function setAlterarHistoricoTreinamento($H_idHistorico_Treinamento,$H_Treinament
 
 
 //FUNÇÃO DE BUSCAR TREIMANETO NO BANCO DE DADOS POR ID
-Function GetTreinamentoById($T_idTreinamento){
+Function GetHistoricoTreinamentoById($H_idHistorico_Treinamento){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
-    // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
-    $GetTreinamentoByIdSQL_Exists = "SELECT * FROM Treinamentos WHERE idTreinamento = ?";
-    $GetTreinamentoByIdStament = $pdo->prepare($GetTreinamentoByIdSQL_Exists); 
+    // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DA TURMA COM O ID NO SISTEMA
+    $GetHistoricoTreinamentoByIdSQL_Exists = "SELECT * FROM Historico_Treinamentos WHERE  idHistorico_Treinamento= ?";
+    $GetHistoricoTreinamentoByIdStament = $pdo->prepare($GetHistoricoTreinamentoByIdSQL_Exists); 
     // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
-    $GetTreinamentoByIdStament->bindValue(1,$T_idTreinamento);
+    $GetHistoricoTreinamentoByIdStament->bindValue(1,$H_idHistorico_Treinamento);
     // EXECUTANDO O SQL UTILIAZANDO UM TRY
     try {
       //SQL EXECUTADA
-      $GetTreinamentoByIdStament->execute(); 
+      $GetHistoricoTreinamentoByIdStament->execute(); 
       //TRANSFORMANDO SQL EXECUTADA EM UM OBJETO ARRAY
-      $GetTreinamentoByIdObject = $GetTreinamentoByIdStament->fetch(PDO::FETCH_ASSOC);
-     return $GetTreinamentoByIdObject;
+      $GetHistoricoTreinamentoByIdObject = $GetHistoricoTreinamentoByIdStament->fetch(PDO::FETCH_ASSOC);
+     return $GetHistoricoTreinamentoByIdObject;
 
      }catch (PDOException $e) {
       echo "Erro PDO: " . $e->getMessage();
@@ -112,22 +112,46 @@ Function GetTreinamentoById($T_idTreinamento){
 
 
 
-//FUNÇÃO DE BUSCAR TREINAMENTO NO BANCO DE DADOS POR NOME
-Function GetTreinamentoByNome($T_Nome){
+//FUNÇÃO DE BUSCAR TREINAMENTO NO BANCO DE DADOS POR CPF
+Function GetHistoricoTreinamentoByFuncionarios_CPF($H_Funcionarios_CPF){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
-    // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
-    $GetTreinamentoSQL_Exists = "SELECT * FROM Treinamentos WHERE Nome LIKE ?";
-    $GetTreinamentoStament = $pdo->prepare($GetTreinamentoSQL_Exists); 
+    // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DE FUNCIONARIO EM TURMA NO SISTEMA
+    $GetHistoricoTreinamentoByFuncionarios_CPFSQL = "SELECT * FROM Historico_Treinamentos WHERE  Funcionario_CPF= ?";
+    $GetHistoricoTreinamentoByFuncionarios_CPFStament = $pdo->prepare($GetHistoricoTreinamentoByFuncionarios_CPFSQL); 
     // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
-    $GetTreinamentoStament->bindValue(1,'%'. $T_Nome.'%', PDO::PARAM_STR);
+    $GetHistoricoTreinamentoByFuncionarios_CPFStament->bindValue(1,$H_Funcionarios_CPF);
+    // EXECUTANDO O SQL UTILIAZANDO UM TRY
+    try {
+      //SQL EXECUTADA
+      $GetHistoricoTreinamentoByFuncionarios_CPFStament->execute(); 
+      //TRANSFORMANDO SQL EXECUTADA EM UM OBJETO ARRAY
+      $GetHistoricoTreinamentoByFuncionarios_CPFObject = $GetHistoricoTreinamentoByFuncionarios_CPFStament->fetch(PDO::PARAM_STR);
+     return $GetHistoricoTreinamentoByFuncionarios_CPFObject;
+
+     }catch (PDOException $e) {
+      echo "Erro PDO: " . $e->getMessage();
+    }
+}
+
+
+
+//FUNÇÃO DE BUSCAR TREINAMENTO NO BANCO DE DADOS POR ID DA TABELA TREINAMENTOS
+Function GetHistoricoTreinamentoByTreinamentos_idTreinamento($H_Treinamentos_idTreinamento){
+    //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
+    require "Conexao.php";
+    // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DE TURMA COM UM TREINAMENTO ESPECIFICO
+    $GetHistoricoTreinamentoByTreinamentos_idTreinamentoSQL = "SELECT * FROM Historico_Treinamentos WHERE Treinamentos_idTreinamento= ?";
+    $GetHistoricoTreinamentoByTreinamentos_idTreinamentoStament = $pdo->prepare($GetHistoricoTreinamentoByTreinamentos_idTreinamentoSQL); 
+    // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
+    $GetHistoricoTreinamentoByTreinamentos_idTreinamentoStament->bindValue(1,$H_Treinamentos_idTreinamento, PDO::PARAM_INT);
     // EXECUTANDO O SQL UTILIZANDO UM TRY
     try {
       //SQL EXECUTADA
-      $GetTreinamentoStament->execute(); 
+      $GetHistoricoTreinamentoByTreinamentos_idTreinamentoStament->execute(); 
       //TRANSFORMANDO SQL EXECUTADA EM UM OBJETO ARRAY
-      $GetTreinamentoObject = $GetTreinamentoStament->fetchALL(PDO::FETCH_ASSOC);
-     return $GetTreinamentoObject;
+      $GetHistoricoTreinamentoByTreinamentos_idTreinamentoObject = $GetTreGetHistoricoTreinamentoByTreinamentos_idTreinamentoStamentinamentoStament->fetchALL(PDO::FETCH_ASSOC);
+     return $GetHistoricoTreinamentoByTreinamentos_idTreinamentoObject;
 
      }catch (PDOException $e) {
       echo "Erro PDO: " . $e->getMessage();
@@ -137,19 +161,19 @@ Function GetTreinamentoByNome($T_Nome){
 
 
 //FUNÇÃO DE BUSCAR TODAS OS TREINAMENTOS
-Function GetTreinamentosALL(){
+Function GetHistoricoTreinamentosALL(){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O SELECT
-    $GetTreinamentosALLSQL = "SELECT * FROM Treinamentos";
-    $GetTreinamentosALLStament = $pdo->query($GetTreinamentosALLSQL); 
+    $GetHistoricoTreinamentosALLSQL = "SELECT * FROM Treinamentos";
+    $GetHistoricoTreinamentosALLStament = $pdo->query($GetHistoricoTreinamentosALLSQL); 
     // EXECUTANDO O SQL UTILIZANDO UM TRY
     try {
         //SQL EXECUTADA
-        $GetTreinamentosALLStament->execute(); 
+        $GetHistoricoTreinamentosALLStament->execute(); 
         //TRANSFORMANDO SQL EXECUTADA EM UM OBJETO ARRAY
-        $GetTreinamentosALLObject = $GetTreinamentosALLStament->fetchAll(PDO::FETCH_ASSOC);
-       return $GetTreinamentosALLObject;
+        $GetHistoricoTreinamentosALLObject = $GetHistoricoTreinamentosALLStament->fetchAll(PDO::FETCH_ASSOC);
+       return $GetHistoricoTreinamentosALLObject;
   
        }catch (PDOException $e) {
         return $e->getMessage();
@@ -158,18 +182,18 @@ Function GetTreinamentosALL(){
 
 
 
-//FUNÇÃO DE DELETAR TREINAMENTO NO BANCO DE DADOS POR ID
-Function setTreinamentoExcluir($T_idTreinamento){
+//FUNÇÃO DE DELETAR HISTORICO DE TREINAMENTO NO BANCO DE DADOS POR ID
+Function setHistoricoTreinamentoExcluir($H_idHistorico_Treinamento){
     require "Conexao.php";
-    // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
-    $setTreinamentoExcluirSQL = "DELETE FROM Treinamentos WHERE idTreinamento= ? ";
-    $setTreinamentoExcluirStament = $pdo->prepare($setTreinamentoExcluirSQL); 
+    // CRIANDO O DELETE PARA DELETAR TURMA NO SISTEMA
+    $setHistoricoTreinamentoExcluirSQL = "DELETE FROM Historico_Treinamentos WHERE idHistorico_Treinamentos= ? ";
+    $setHistoricoTreinamentoExcluirStament = $pdo->prepare($setHistoricoTreinamentoExcluirSQL); 
     // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
-    $setTreinamentoExcluirStament->bindValue(1, $T_idTreinamento, PDO::PARAM_INT);
+    $setHistoricoTreinamentoExcluirStament->bindValue(1, $H_idHistorico_Treinamento, PDO::PARAM_INT);
     // EXECUTANDO O SQL UTILIAZANDO UM TRY
     try {
       //SQL EXECUTADA
-      $setTreinamentoExcluirStament->execute(); 
+      $setHistoricoTreinamentoExcluirStament->execute(); 
       return true;
 
      }catch (PDOException $e) {
@@ -179,24 +203,75 @@ Function setTreinamentoExcluir($T_idTreinamento){
 }
 
 
-//FUNÇÃO DE BUSCAR TREINAMENTO NO BANCO DE DADOS POR EMPRESA_FORNECEDORA
-Function GetTreinamentoByeEmpresa_Fornecedora($T_Empresa_Fornecedora){
+
+//FUNÇÃO DE BUSCAR HISTORICO DE TREINAMENTOS NO BANCO DE DADOS POR INSTRUTOR
+Function GetHistoricoTreinamentoByeInstrutor($H_Instrutor){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
-    // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
-    $GetTreinamentoByeEmpresa_FornecedoraSQL = "SELECT * FROM Treinamentos WHERE Empresa_Fornecedora LIKE ?";
-    $GetTreinamentoByeEmpresa_FornecedoraStament = $pdo->prepare($GetTreinamentoByeEmpresa_FornecedoraSQL); 
+    // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO INSTRUTOR NO SISTEMA
+    $GetHistoricoTreinamentoByeInstrutorSQL = "SELECT * FROM Historico_Treinamentos WHERE Instrutor LIKE ?";
+    $GetHistoricoTreinamentoByeInstrutorStament = $pdo->prepare($GetHistoricoTreinamentoByeInstrutorSQL); 
     // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
-    $GetTreinamentoByeEmpresa_FornecedoraStament->bindValue(1,'%'. $T_Empresa_Fornecedora.'%', PDO::PARAM_STR);
+    $GetHistoricoTreinamentoByeInstrutorStament->bindValue(1,'%'. $H_Instrutor.'%', PDO::PARAM_STR);
     // EXECUTANDO O SQL UTILIZANDO UM TRY
     try {
       //SQL EXECUTADA
-      $GetTreinamentoByeEmpresa_FornecedoraStament->execute(); 
+      $GetHistoricoTreinamentoByeInstrutorStament->execute(); 
       //TRANSFORMANDO SQL EXECUTADA EM UM OBJETO ARRAY
-      $GetTreinamentoByeEmpresa_FornecedoraObject = $GetTreinamentoByeEmpresa_FornecedoraStament->fetchALL(PDO::FETCH_ASSOC);
-     return $GetTreinamentoByeEmpresa_FornecedoraObject;
+      $GetHistoricoTreinamentoByeInstrutorObject = $GetHistoricoTreinamentoByeInstrutorStament->fetchALL(PDO::FETCH_ASSOC);
+     return $GetHistoricoTreinamentoByeInstrutorObject;
 
      }catch (PDOException $e) {
       echo "Erro PDO: " . $e->getMessage();
     }
+}
+
+
+
+//FUNÇÃO DE BUSCAR TREINAMENTO NO BANCO DE DADOS POR PAGO
+Function GetHistoricoTreinamentoByPago($H_Pago){
+    //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
+    require "Conexao.php";
+    // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DA TURMA COM CURSO PAGO
+    $GetHistoricoTreinamentoByPagoSQL_Exists = "SELECT * FROM Historico_Treinamentos WHERE Pago= ? ";
+    $GetHistoricoTreinamentoByPagoStament = $pdo->prepare($GetHistoricoTreinamentoByPagoSQL_Exists); 
+    // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
+    $GetHistoricoTreinamentoByPagoStament->bindValue(1,$H_Pago, PDO::PARAM_INT);
+    // EXECUTANDO O SQL UTILIAZANDO UM TRY
+    try {
+      //SQL EXECUTADA
+      $GetHistoricoTreinamentoByPagoStament->execute(); 
+      //TRANSFORMANDO SQL EXECUTADA EM UM OBJETO ARRAY
+      $GetHistoricoTreinamentoByPagoObject = $GetHistoricoTreinamentoByPagoStament->fetchALL(PDO::FETCH_ASSOC);
+     return $GetHistoricoTreinamentoByPagoObject;
+
+     }catch (PDOException $e) {
+      echo "Erro PDO: " . $e->getMessage();
+    }
+}
+
+
+
+//FUNÇÃO DE BUSCAR TREINAMENTO NO BANCO DE DADOS POR DATA_VALIDADE
+function GetHistoricoTreinamentosByData_Validade($H_Data_de_Validade){
+    //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
+    require "Conexao.php";
+    // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DA TURMA COM CURSO DATA_VALIDADE
+    $GetHistoricoTreinamentosByData_ValidadeSQL_Exists = "SELECT * FROM Historico_Treinamentos WHERE Data_Validade= ? ";
+    $GetHistoricoTreinamentosByData_ValidadeStament = $pdo->prepare($GetHistoricoTreinamentosByData_ValidadeSQL_Exists); 
+    // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
+    $GetHistoricoTreinamentosByData_ValidadeStament->bindValue(1,$H_Data_de_Validade, PDO::PARAM_DATE);
+    // EXECUTANDO O SQL UTILIAZANDO UM TRY
+    try {
+      //SQL EXECUTADA
+      $GetHistoricoTreinamentosByData_ValidadeStament->execute(); 
+      //TRANSFORMANDO SQL EXECUTADA EM UM OBJETO ARRAY
+      $GetHistoricoTreinamentosByData_ValidadeObject = $GetHistoricoTreinamentosByData_ValidadeStament->fetchALL(PDO::FETCH_ASSOC);
+     return $GetHistoricoTreinamentosByData_ValidadeObject;
+
+     }catch (PDOException $e) {
+      echo "Erro PDO: " . $e->getMessage();
+    }
+
+
 }
