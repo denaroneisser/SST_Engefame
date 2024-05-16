@@ -27,5 +27,5 @@ README.md: Este arquivo que você está lendo.
 Contribuindo
 Sinta-se à vontade para contribuir com melhorias, correções de bugs ou novas funcionalidades. Basta criar uma nova branch, fazer suas alterações e enviar um pull request.
 
-Licença
+# Licença
 Este projeto está licenciado sob a Vinicius Neisser
