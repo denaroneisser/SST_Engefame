@@ -25,4 +25,3 @@ $pdo = new PDO($DataBase_parametro , $DataBase_User, $DataBase_Password);
 echo $DataBase_error->getMessage(); // MENSAGEM DE ERRO DE CONEXAO
 exit(1); 
 } 
-
