@@ -24,7 +24,7 @@ Funções de GET/SET para a Tabela Historico_Treinamentos
 
 
 
-//FUNÇÃO DE INCLUIR HISTORICO_TREINAMENTO NO BANCO DE DADOS
+//FUNÇÃO DE INCLUIR HISTORICO_TREINAMENTO NO BANCO DE DADOS 
 function setHistoricoTreinamento($H_Treinamentos_idTreinamento,$H_Funcionarios_CPF,$H_Instrutor,$H_Data_Realizacao,$H_Data_de_Validade,$H_Comprovacao,$H_Modalidade,$H_CargaHoraria,$H_Pago,$H_Valor_Por_Pessoa){
 //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
