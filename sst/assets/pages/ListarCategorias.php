@@ -10,34 +10,61 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Verifica se a conexão foi bem-sucedida
 if ($conn->connect_error) {
-    // Se a conexão falhar, mostra uma mensagem de erro e encerra o script
     die("Conexão falhou: " . $conn->connect_error);
 }
 
 // Define a busca baseada no parâmetro de pesquisa recebido via GET
 $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
+$searchColumn = isset($_GET['searchColumn']) ? $conn->real_escape_string($_GET['searchColumn']) : '';
 
-// Monta a query SQL para buscar os funcionários no banco de dados
-$sql = "SELECT categorias.idCategoria, categorias.nome as categoria, funcionarios.nome, funcionarios.cpf, funcionarios.situacao
-        FROM funcionarios 
-        INNER JOIN categorias ON funcionarios.Categorias_idCategoria = categorias.idCategoria 
-        WHERE funcionarios.nome LIKE '%$search%' OR funcionarios.cpf LIKE '%$search%' OR categorias.nome LIKE '%$search%'";
+// Define a coluna para a pesquisa
+$columnMap = [
+    'Nome' => 'Categorias.Nome',
+    'IdCategoria' => 'categorias.idCategoria',
+];
+$searchColumnSql = isset($columnMap[$searchColumn]) ? $columnMap[$searchColumn] : '';
+
+// Paginação
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$items_per_page = 15;
+$offset = ($page - 1) * $items_per_page;
+
+// Monta a query SQL para contar o total de funcionários no banco de dados
+$sql_count = "SELECT COUNT(*) as total
+              FROM funcionarios 
+              INNER JOIN categorias ON funcionarios.Categorias_idCategoria = categorias.idCategoria";
+if ($search && $searchColumnSql) {
+    $sql_count .= " WHERE $searchColumnSql LIKE '%$search%'";
+} elseif ($search) {
+    $sql_count .= " WHERE funcionarios.nome LIKE '%$search%' OR funcionarios.cpf LIKE '%$search%' OR categorias.nome LIKE '%$search%'";
+}
+
+// Executa a query SQL para contar o total de Categorias
+$result_count = $conn->query($sql_count);
+$total_items = $result_count->fetch_assoc()['total'];
+$total_pages = ceil($total_items / $items_per_page);
+
+// Monta a query SQL para buscar os funcionários no banco de dados com limite e offset
+$sql = "SELECT * FROM Categorias";
+if ($search && $searchColumnSql) {
+    $sql .= " WHERE $searchColumnSql LIKE '%$search%'";
+} elseif ($search) {
+    $sql .= " WHERE funcionarios.nome LIKE '%$search%' OR funcionarios.cpf LIKE '%$search%' OR categorias.nome LIKE '%$search%'";
+}
+$sql .= " LIMIT $items_per_page OFFSET $offset";
 
 // Executa a query SQL
 $result = $conn->query($sql);
 
 // Verifica se houve erro na execução da query
 if ($result === false) {
-    // Se houve erro, mostra uma mensagem de erro
     echo "Erro na consulta: " . $conn->error;
-    // Define um array vazio para as pessoas
-    $pessoas = [];
+    $categorias = [];
 } else {
-    // Se a query foi bem-sucedida, obtém os resultados e armazena em um array
-    $pessoas = [];
+    $categorias = [];
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $pessoas[] = $row;
+            $categorias[] = $row;
         }
     }
 }
@@ -52,29 +79,27 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Funcionários</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
         }
         .container {
             width: 90%;
             max-width: 1200px;
+            margin: 20px auto;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
             margin-bottom: 20px;
         }
         .header h1 {
@@ -82,7 +107,10 @@ $conn->close();
         }
         .toolbar {
             display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 10px;
+            margin-bottom: 20px;
         }
         .btn {
             padding: 8px 12px;
@@ -96,94 +124,88 @@ $conn->close();
         .btn:hover {
             background-color: #0056b3;
         }
-        .actions-dropdown {
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-        .search-bar {
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+        .actions-dropdown, .search-bar, .search-column {
+            min-width: 200px;
         }
         .employee-table {
             width: 100%;
+            overflow-x: auto;
             border-collapse: collapse;
         }
-        .employee-table thead {
-            background-color: #007bff;
-            color: #fff;
-        }
-        .employee-table th, .employee-table td {
+        .employee-table th,
+        .employee-table td {
             padding: 10px;
             border: 1px solid #ccc;
             text-align: left;
         }
-        .employee-table tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination a,
+        .pagination span {
+            padding: 10px 20px;
+            margin: 0 5px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .pagination a:hover {
+            background-color: #0056b3;
+        }
+        .pagination .disabled {
+            background-color: #ccc;
+            pointer-events: none;
         }
         .employee-table tr.selected {
-            background-color: #cce5ff;
+            background-color: #e0e0e0;
         }
     </style>
 </head>
 <body>
-    <!-- O conteúdo da página está contido dentro de uma div com a classe "container" -->
     <div class="container">
-        <!-- O cabeçalho da página contém o título "Cadastro de Funcionários" -->
         <div class="header">
-           
-        <h1>Cadastro de Funcionários</h1>
-            <!-- A barra de ferramentas contém botões para incluir, alterar e visualizar funcionários, um menu suspenso para outras ações e um formulário de pesquisa -->
+            <h1>Cadastro de Categorias - Alpha</h1>
             <div class="toolbar">
-                <!-- Botão para abrir um popup de inclusão de funcionário -->
                 <button class="btn" onclick="abrirPopupIncluir()">Incluir</button>
-                <!-- Botão para abrir um popup de alteração de funcionário (este botão não tem uma função implementada atualmente) -->
-                <button class="btn" onclick="abrirPopupAlterar()">Alterar</button>
-                <!-- Botão para visualizar funcionários (esta funcionalidade ainda não está implementada) -->
-                <button class="btn">Visualizar</button>
-                <!-- Menu suspenso para outras ações -->
-                <select class="actions-dropdown">
-                    <option value="">Outras Ações</option>
-                    <option value="action1">Ação 1</option>
-                    <option value="action2">Ação 2</option>
-                </select>
-                <!-- Formulário de pesquisa para filtrar funcionários -->
-                <form method="GET" style ="display: inline;">
+                <button class="btn" onclick="realizarAcao('alterar')">Alterar</button>
+                <button class="btn" onclick="realizarAcao('visualizar')">Visualizar</button>
+                <button class="btn" onclick="realizarAcao('apagar')">Apagar</button>
+                <form method="GET" style="display: inline;">
                     <input type="text" name="search" placeholder="Pesquisar" class="search-bar" value="<?php echo htmlspecialchars($search); ?>">
+                    <select name="searchColumn" class="search-column">
+                        <option value="">Todas as colunas</option>
+                        <option value="idCategoria" <?php echo $searchColumn == 'Nome' ? 'selected' : ''; ?>>Nome</option>
+                        <option value="Nome" <?php echo $searchColumn == 'IdCategoria' ? 'selected' : ''; ?>>CPF</option>
+                    </select>
                     <button type="submit" class="btn">Filtrar</button>
                 </form>
             </div>
         </div>
-        <!-- A tabela exibe os funcionários cadastrados -->
+        
         <table class="employee-table">
             <thead>
-                <!-- Cabeçalho da tabela -->
                 <tr>
-                    <th>Categoria</th>
+                    <th>ID</th>
                     <th>Nome</th>
-                    <th>CPF</th>
-                    <th>Situação</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Verifica se há funcionários cadastrados -->
-                <?php if (count($pessoas) > 0): ?>
+                <?php if (count($categorias) > 0): ?>
                     <!-- Se houver funcionários, percorre cada um deles -->
-                    <?php foreach ($pessoas as $pessoa): ?>
+                    <?php foreach ($categorias as $categoria): ?>
                         <!-- Para cada funcionário, cria uma linha na tabela -->
-                        <tr data-cpf="<?php echo htmlspecialchars($pessoa['cpf']); ?>">
+                        <tr data-cpf="<?php echo htmlspecialchars($categoria['idCategoria']); ?>">
                             <!-- Exibe a categoria do funcionário -->
-                            <td><?php echo htmlspecialchars($pessoa['categoria']); ?></td>
+                            <td><?php echo htmlspecialchars($categoria['Nome']); ?></td>
                             <!-- Exibe o nome do funcionário -->
-                            <td><?php echo htmlspecialchars($pessoa['nome']); ?></td>
-                            <!-- Exibe o CPF do funcionário -->
-                            <td><?php echo htmlspecialchars($pessoa['cpf']); ?></td>
-                            <!-- Exibe a situação do funcionário -->
-                            <td><?php if($pessoa['situacao']==1){echo 'Ativo';}else{echo 'Inativo';} ?></td>
                         </tr>
                     <?php endforeach; ?>
-                <!-- Se não houver funcionários cadastrados, exibe uma mensagem indicando isso -->
+                        </tr>
+                    <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
                         <td colspan="4">Nenhum resultado encontrado</td>
@@ -191,78 +213,131 @@ $conn->close();
                 <?php endif; ?>
             </tbody>
         </table>
+        <div class="pagination">
+            <?php if ($page > 1): ?>
+                <a href="?search=<?php echo urlencode($search); ?>&searchColumn=<?php echo urlencode($searchColumn); ?>&page=<?php echo $page - 1; ?>">Anterior</a>
+            <?php else: ?>
+                <span class="disabled">Anterior</span>
+            <?php endif; ?>
+            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                <?php if ($i == $page): ?>
+                    <span class="disabled"><?php echo $i; ?></span>
+                <?php else: ?>
+                    <a href="?search=<?php echo urlencode($search); ?>&searchColumn=<?php echo urlencode($searchColumn); ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                <?php endif; ?>
+            <?php endfor; ?>
+            <?php if ($page < $total_pages): ?>
+                <a href="?search=<?php echo urlencode($search); ?>&searchColumn
+                =<?php echo urlencode($searchColumn); ?>&page=<?php echo $page + 1; ?>">Próximo</a>
+            <?php else: ?>
+                <span class="disabled">Próximo</span>
+            <?php endif; ?>
+        </div>
     </div>
-    <!-- JavaScript para manipulação da interface -->
     <script>
-// Função para abrir o popup de alteração de funcionário
-function abrirPopupAlterar() {
-    // Verifica se alguma linha da tabela está selecionada
-    var selectedRow = document.querySelector('.employee-table tr.selected');
-    if (selectedRow) {
-        // Obtém o CPF da linha selecionada
-        var cpf = selectedRow.getAttribute('data-cpf');
-        // Constrói a URL para o script de alteração com o CPF do funcionário
-        var url = "AlterarFuncionario.php?cpf=" + cpf;
-        // Define as dimensões e posição do popup
+    function abrirPopupIncluir() {
+        var url = "CadastroCategoria.php";
         var largura = 600;
         var altura = 400;
         var esquerda = (screen.width - largura) / 2;
         var topo = (screen.height - altura) / 2;
-        // Abre o popup com a URL fornecida
         window.open(url, "_blank", "width=" + largura + ", height=" + altura + ", left=" + esquerda + ", top=" + topo);
-    } else {
-        // Se nenhuma linha estiver selecionada, exibe um alerta
-        alert("Por favor, selecione uma linha antes de prosseguir.");
     }
-}
-        // Função para abrir o popup de alteração de funcionário
-        function abrirPopupIncluir() {
-    // URL da página que você deseja abrir no popup
-    var url = "CadastroFuncionario.php";
 
-    // Largura e altura da janela popup
-    var largura = 600;
-    var altura = 400;
-
-    // Calcula a posição x e y para centralizar a janela popup
-    var esquerda = (screen.width - largura) / 2;
-    var topo = (screen.height - altura) / 2;
-
-    // Abre a janela popup com a URL especificada
-    window.open(url, "_blank", "width=" + largura + ", height=" + altura + ", left=" + esquerda + ", top=" + topo);
-}
-
-        // Função para selecionar a linha da tabela quando clicada
-        function selecionarLinha(event) {
-            // Obtém o elemento TR mais próximo do elemento clicado
-            var tr = event.target.closest('tr');
-            // Verifica se a linha já está selecionada
-            if (!tr.classList.contains('selected')) {
-                // Remove a classe 'selected' de qualquer outra linha selecionada
-                var selectedRow = document.querySelector('.employee-table tr.selected');
-                if (selectedRow) {
-                    selectedRow.classList.remove('selected');
+    function realizarAcao(acao) {
+        var selectedRow = document.querySelector('.employee-table tr.selected');
+        if (selectedRow) {
+            var cpf = selectedRow.getAttribute('data-cpf');
+            var url = "";
+            if (acao === 'alterar') {
+                url = "AlterarFuncionario.php?cpf=" + cpf;
+            } else if (acao === 'visualizar') {
+                url = "VisualizarFuncionario.php?cpf=" + cpf;
+            } else if (acao === 'apagar') {
+                if (confirm("Tem certeza que deseja apagar este funcionário?")) {
+                    url = "ApagarFuncionario.php?cpf=" + cpf;
+                    window.location.href = url;
+                    return;
+                } else {
+                    return;
                 }
-                // Adiciona a classe 'selected' à linha clicada
-                tr.classList.add('selected');
             }
+            var largura = 600;
+            var altura = 400;
+            var esquerda = (screen.width - largura) / 2;
+            var topo = (screen.height - altura) / 2;
+            window.open(url, "_blank", "width=" + largura + ", height=" + altura + ", left=" + esquerda + ", top=" + topo);
+        } else {
+            alert("Por favor, selecione uma linha antes de prosseguir.");
         }
+    }
 
-        // Adiciona evento de clique para cada linha da tabela após o carregamento do DOM
-        document.addEventListener('DOMContentLoaded', function() {
-            // Seleciona todas as linhas da tabela
-            var rows = document.querySelectorAll('.employee-table tbody tr');
-            // Adiciona um listener de clique para cada linha
-            rows.forEach(function(row) {
-                row.addEventListener('click', selecionarLinha);
-            });
-
-            // Se houver um ID passado por GET na URL, seleciona a linha correspondente
-            var selected_id = "<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>";
-            var selectedRow = document.querySelector('.employee-table tr[data-id="' + selected_id + '"]');
+    function selecionarLinha(event) {
+        var tr = event.target.closest('tr');
+        if (!tr.classList.contains('selected')) {
+            var selectedRow = document.querySelector('.employee-table tr.selected');
             if (selectedRow) {
-                selectedRow.classList.add('selected');
+                selectedRow.classList.remove('selected');
             }
+            tr.classList.add('selected');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var rows = document.querySelectorAll('.employee-table tbody tr');
+        rows.forEach(function(row) {
+            row.addEventListener('click', selecionarLinha);
         });
-    </script>
-</body
+
+        var selected_id = "<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>";
+        var selectedRow = document.querySelector('.employee-table tr[data-cpf="' + selected_id + '"]');
+        if (selectedRow) {
+            selectedRow.classList.add('selected');
+        }
+    });
+</script>
+
+<style>
+    /* Estilos para a barra de pesquisa */
+    .search-bar {
+        flex: 1;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+    }
+
+    /* Estilos para a caixa de categorias */
+    .search-column select {
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        background-color: #f9f9f9;
+    }
+
+    /* Estilizando as opções da caixa de categorias */
+    .search-column select option {
+        background-color: #fff;
+    }
+
+    /* Estilos para o botão de filtro */
+    .btn-filter {
+        padding: 10px 15px;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    /* Estilos para o botão de filtro ao passar o mouse */
+    .btn-filter:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+
+</body>
+</html>
