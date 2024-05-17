@@ -252,7 +252,7 @@ $conn->close();
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="4">Nenhum resultado encontrado</td>
+                        <td colspan="12">Nenhum resultado encontrado</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
