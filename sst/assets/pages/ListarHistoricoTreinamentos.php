@@ -74,8 +74,7 @@ AND historico_treinamentos.Funcionarios_Categorias_idCategoria = funcionarios.Ca
 INNER JOIN 
 treinamentos ON historico_treinamentos.Treinamentos_idTreinamento = treinamentos.idTreinamento
 INNER JOIN 
-categorias ON funcionarios.Categorias_idCategoria = categorias.idCategoria;
-";
+categorias ON funcionarios.Categorias_idCategoria = categorias.idCategoria";
 if ($search && $searchColumnSql) {
     $sql .= " WHERE $searchColumnSql LIKE '%$search%'";
 } elseif ($search) {
