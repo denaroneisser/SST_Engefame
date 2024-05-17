@@ -57,8 +57,8 @@ require_once("../objects/Funcionarios.php");
             <div class="form-group">
                 <label for="situacao">Situação</label>
                 <select id="situacao" name="situacao" required>
-                    <option value="Ativo" <?php if($funcionario['Situacao']==1){echo "selected";}?>>Ativo</option>
-                    <option value="Inativo" <?php if($funcionario['Situacao']==0){echo "selected";}?>>Inativo</option>
+                    <option value="1" <?php if($funcionario['Situacao']==1){echo "selected";}?>>Ativo</option>
+                    <option value="0" <?php if($funcionario['Situacao']==0){echo "selected";}?>>Inativo</option>
                 </select>
             </div>
             <div class="form-group">

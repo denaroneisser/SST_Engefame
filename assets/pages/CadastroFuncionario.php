@@ -45,8 +45,8 @@ require_once("../objects/Funcionarios.php");
             <div class="form-group">
                 <label for="situacao">Situação</label>
                 <select id="situacao" name="situacao" required>
-                    <option value="Ativo">Ativo</option>
-                    <option value="Inativo">Inativo</option>
+                    <option value="1">Ativo</option>
+                    <option value="0">Inativo</option>
                 </select>
             </div>
             <div class="form-group">
