@@ -20,7 +20,7 @@ require_once("../objects/Categorias.php");
     ?>
     <div class="container">
         <h2>Alterar Categoria</h2>
-        <form action="AlterarFuncionario.php" method="POST">
+        <form action="AlterarCategoria.php" method="POST">
             <div class="form-group">
                 <label for="idcategoria">ID da Categoria</label>
                 <label for="idcategoria">CPF</label>
