@@ -86,6 +86,7 @@ $sql = "SELECT
     historico_treinamentos.Data_Validade,
     historico_treinamentos.Comprovacao,
     historico_treinamentos.Modalidade,
+    historico_treinamentos.Instrutor,
     historico_treinamentos.Carga_Horaria,
     historico_treinamentos.Preco_Unitario
 FROM 
@@ -264,21 +265,20 @@ $conn->close();
             <tbody>
                 <?php if (count($HistoricoTreinamentos) > 0): ?>
                     <?php foreach ($HistoricoTreinamentos as $HistoricoTreinamento): ?>
-                        <tr data-idHistoricoTreinamento="<?php echo htmlspecialchars($HistoricoTreinamento['historico_treinamentos.idHistorico_treinamento']); ?>">
-                            <td><?php echo htmlspecialchars($HistoricoTreinamento['historico_treinamentos.idHistorico_treinamento']); ?></td>
-                            <td><?php echo htmlspecialchars($HistoricoTreinamento['Treinamentos.Nome']); ?></td>
-                            <td><?php echo htmlspecialchars($HistoricoTreinamento['empresas.Nome']); ?></td>
+                        <tr data-idHistoricoTreinamento="<?php echo htmlspecialchars($HistoricoTreinamento['idHistorico_treinamento']); ?>">
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['idHistorico_treinamento']); ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['treinamento_nome']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['funcionario_nome']); ?></td>
-                            <td><?php echo htmlspecialchars($HistoricoTreinamento['funcionarios.CPF']); ?></td>
-                            <td><?php echo htmlspecialchars($HistoricoTreinamento['Categorias.Nome']); ?></td>
-                            <td><?php echo $HistoricoTreinamento['Funcionarios.Situacao'] == 1 ? 'Ativo' : 'Inativo'; ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['CPF']); ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['categoria_nome']); ?></td>
+                            <td><?php echo $HistoricoTreinamento['Situacao'] == 1 ? 'Ativo' : 'Inativo'; ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['Data_Realizacao']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['Data_Validade']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['Instrutor']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['Carga_Horaria']); ?></td>
                             <td><?php echo $HistoricoTreinamento['Modalidade'] == 1 ? 'Presencial' : 'Online'; ?></td>
                             <td><?php echo $HistoricoTreinamento['Comprovacao'] == 1 ? 'SIM' : 'NÃO'; ?></td>
-                            <td><?php echo htmlspecialchars($HistoricoTreinamento['Valor_Por_Pessoa']); ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['Preco_Unitario']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
