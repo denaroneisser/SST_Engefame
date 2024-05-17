@@ -49,42 +49,63 @@ $result_count = $conn->query($sql_count);
 $total_items = $result_count->fetch_assoc()['total'];
 $total_pages = ceil($total_items / $items_per_page);
 
-// Monta a query SQL para buscar os funcionários no banco de dados com limite e offset
+// Monta a query SQL para contar o total de registros no banco de dados
+$sql_count = "SELECT COUNT(*) AS total
+FROM historico_treinamentos
+INNER JOIN funcionarios 
+    ON historico_treinamentos.Funcionarios_CPF = funcionarios.CPF
+    AND historico_treinamentos.Funcionarios_Categorias_idCategoria = funcionarios.Categorias_idCategoria
+INNER JOIN categorias 
+    ON funcionarios.Categorias_idCategoria = categorias.idCategoria";
+
+if ($search && $searchColumnSql) {
+    $sql_count .= " WHERE $searchColumnSql LIKE '%$search%'";
+} elseif ($search) {
+    $sql_count .= " WHERE funcionarios.Nome LIKE '%$search%' OR funcionarios.CPF LIKE '%$search%' OR categorias.Nome LIKE '%$search%'";
+}
+
+// Executa a query SQL para contar o total de registros
+$result_count = $conn->query($sql_count);
+$total_items = $result_count->fetch_assoc()['total'];
+$total_pages = ceil($total_items / $items_per_page);
+
+// Monta a query SQL para buscar os registros no banco de dados com limite e offset
 $sql = "SELECT 
-categorias.idCategoria,
-categorias.Nome,
-funcionarios.Nome,
-funcionarios.CPF,
-funcionarios.Situacao,
-treinamentos.idTreinamento,
-treinamentos.Nome,
-treinamentos.Descricao,
-historico_treinamentos.idHistorico_treinamento,
-historico_treinamentos.Data_Realizacao,
-historico_treinamentos.Data_Validade,
-historico_treinamentos.Comprovacao,
-historico_treinamentos.Modalidade,
-historico_treinamentos.Carga_Horaria,
-historico_treinamentos.Preco_Unitario
+    categorias.idCategoria,
+    categorias.Nome AS categoria_nome,
+    funcionarios.Nome AS funcionario_nome,
+    funcionarios.CPF,
+    funcionarios.Situacao,
+    treinamentos.idTreinamento,
+    treinamentos.Nome AS treinamento_nome,
+    treinamentos.Descricao,
+    historico_treinamentos.idHistorico_treinamento,
+    historico_treinamentos.Data_Realizacao,
+    historico_treinamentos.Data_Validade,
+    historico_treinamentos.Comprovacao,
+    historico_treinamentos.Modalidade,
+    historico_treinamentos.Carga_Horaria,
+    historico_treinamentos.Preco_Unitario
 FROM 
-historico_treinamentos
+    historico_treinamentos
 INNER JOIN 
-funcionarios ON historico_treinamentos.Funcionarios_CPF = funcionarios.CPF
-AND historico_treinamentos.Funcionarios_Categorias_idCategoria = funcionarios.Categorias_idCategoria
+    funcionarios ON historico_treinamentos.Funcionarios_CPF = funcionarios.CPF
+    AND historico_treinamentos.Funcionarios_Categorias_idCategoria = funcionarios.Categorias_idCategoria
 INNER JOIN 
-treinamentos ON historico_treinamentos.Treinamentos_idTreinamento = treinamentos.idTreinamento
+    treinamentos ON historico_treinamentos.Treinamentos_idTreinamento = treinamentos.idTreinamento
 INNER JOIN 
-categorias ON funcionarios.Categorias_idCategoria = categorias.idCategoria;
-";
+    categorias ON funcionarios.Categorias_idCategoria = categorias.idCategoria";
+
 if ($search && $searchColumnSql) {
     $sql .= " WHERE $searchColumnSql LIKE '%$search%'";
 } elseif ($search) {
-    $sql .= " WHERE funcionarios.nome LIKE '%$search%' OR funcionarios.cpf LIKE '%$search%' OR categorias.nome LIKE '%$search%'";
+    $sql .= " WHERE funcionarios.Nome LIKE '%$search%' OR funcionarios.CPF LIKE '%$search%' OR categorias.Nome LIKE '%$search%'";
 }
 $sql .= " LIMIT $items_per_page OFFSET $offset";
 
 // Executa a query SQL
 $result = $conn->query($sql);
+
 
 // Verifica se houve erro na execução da query
 if ($result === false) {
