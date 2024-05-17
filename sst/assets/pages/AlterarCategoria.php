@@ -38,7 +38,7 @@ require_once("../objects/Categorias.php");
     
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $resultado = setCategoriaAlterar($_POST['Nome'],$_POST['idcategoria']);
+        $resultado = setCategoriaAlterar($_POST['nome'],$_POST['idcategoria']);
             if($resultado==true){
                 echo("<script>alert('Categoria alterada com Sucesso!');</script>");
                 echo("<script>window.close();</script>");
