@@ -268,7 +268,7 @@ $conn->close();
                         <tr data-idHistoricoTreinamento="<?php echo htmlspecialchars($HistoricoTreinamento['idHistorico_treinamento']); ?>">
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['idHistorico_treinamento']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['treinamento_nome']); ?></td>
-                            <td><?php echo htmlspecialchars($HistoricoTreinamento['empresas.Nome']); ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['Nome']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['funcionario_nome']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['CPF']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['categoria_nome']); ?></td>
