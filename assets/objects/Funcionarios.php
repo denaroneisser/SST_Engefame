@@ -117,7 +117,7 @@ Function GetFuncionarioByCPF($F_CPF){
 
 
 //FUNÇÃO DE ALTERAR FUNCIONÁRIO NO BANCO DE DADOS
-function setAlterarFuncionario($F_Nome,$F_CPF,$F_Situacao,$F_Categoria){
+function setFuncionarioAlterar($F_Nome,$F_CPF,$F_Situacao,$F_Categoria){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADAOS
         require "Conexao.php";
                 // CRIANDO O INSERT PARA INCLUIR FUNCIONARIO
