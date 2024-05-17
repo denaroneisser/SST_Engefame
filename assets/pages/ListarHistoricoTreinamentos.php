@@ -33,9 +33,11 @@ $offset = ($page - 1) * $items_per_page;
 // Monta a query SQL para contar o total de funcionários no banco de dados
 $sql_count = "SELECT COUNT(*) AS total
 FROM historico_treinamentos
-INNER JOIN funcionarios ON historico_treinamentos.Funcionarios_CPF = funcionarios.CPF
+INNER JOIN funcionarios 
+    ON historico_treinamentos.Funcionarios_CPF = funcionarios.CPF
     AND historico_treinamentos.Funcionarios_Categorias_idCategoria = funcionarios.Categorias_idCategoria
-INNER JOIN categorias ON funcionarios.Categorias_idCategoria = categorias.idCategoria";
+INNER JOIN categorias 
+    ON funcionarios.Categorias_idCategoria = categorias.idCategoria";
 if ($search && $searchColumnSql) {
     $sql_count .= " WHERE $searchColumnSql LIKE '%$search%'";
 } elseif ($search) {
