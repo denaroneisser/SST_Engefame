@@ -247,7 +247,7 @@ $conn->close();
     function realizarAcao(acao) {
         var selectedRow = document.querySelector('.employee-table tr.selected');
         if (selectedRow) {
-            var cpf = selectedRow.getAttribute('data-idcategoria');
+            var idCategoria = selectedRow.getAttribute('data-idcategoria');
             var url = "";
             if (acao === 'alterar') {
                 url = "AlterarCategoria.php?idCategoria=" + idCategoria;
