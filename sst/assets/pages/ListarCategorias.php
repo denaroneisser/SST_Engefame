@@ -198,7 +198,7 @@ $conn->close();
                     <!-- Se houver funcionários, percorre cada um deles -->
                     <?php foreach ($categorias as $categoria): ?>
                         <!-- Para cada funcionário, cria uma linha na tabela -->
-                        <tr data-idCategoria="<?php echo htmlspecialchars($categoria['idCategoria']); ?>">
+                        <tr data-idcategoria="<?php echo htmlspecialchars($categoria['idCategoria']); ?>">
                             <!-- Exibe a categoria do funcionário -->
                             <td><?php echo htmlspecialchars($categoria['idCategoria']); ?></td>
                             <!-- Exibe a categoria do funcionário -->
@@ -247,7 +247,7 @@ $conn->close();
     function realizarAcao(acao) {
         var selectedRow = document.querySelector('.employee-table tr.selected');
         if (selectedRow) {
-            var cpf = selectedRow.getAttribute('data-idCategoria');
+            var cpf = selectedRow.getAttribute('data-idcategoria');
             var url = "";
             if (acao === 'alterar') {
                 url = "AlterarCategoria.php?idCategoria=" + idCategoria;
@@ -255,7 +255,7 @@ $conn->close();
                 url = "VisualizarCategoria.php?idCategoria=" + idCategoria;
             } else if (acao === 'apagar') {
                 if (confirm("Tem certeza que deseja apagar esta Categoria?")) {
-                    url = "ApagarFuncionario.php?idCategoria=" + idCategoria;
+                    url = "ApagarCategoria.php?idCategoria=" + idCategoria;
                     window.location.href = url;
                     return;
                 } else {
