@@ -56,7 +56,6 @@ funcionarios.CPF,
 funcionarios.Situacao,
 treinamentos.idTreinamento,
 treinamentos.Nome,
-treinamentos.Empresa_Fornecedora,
 treinamentos.Descricao,
 historico_treinamentos.idHistorico_treinamento,
 historico_treinamentos.Data_Realizacao,
@@ -64,8 +63,7 @@ historico_treinamentos.Data_Validade,
 historico_treinamentos.Comprovacao,
 historico_treinamentos.Modalidade,
 historico_treinamentos.Carga_Horaria,
-historico_treinamentos.Preco_Unitario,
-historico_treinamentos.Data_lancamento
+historico_treinamentos.Preco_Unitario
 FROM 
 historico_treinamentos
 INNER JOIN 
@@ -74,7 +72,8 @@ AND historico_treinamentos.Funcionarios_Categorias_idCategoria = funcionarios.Ca
 INNER JOIN 
 treinamentos ON historico_treinamentos.Treinamentos_idTreinamento = treinamentos.idTreinamento
 INNER JOIN 
-categorias ON funcionarios.Categorias_idCategoria = categorias.idCategoria";
+categorias ON funcionarios.Categorias_idCategoria = categorias.idCategoria;
+";
 if ($search && $searchColumnSql) {
     $sql .= " WHERE $searchColumnSql LIKE '%$search%'";
 } elseif ($search) {
@@ -224,6 +223,8 @@ $conn->close();
                     <th>Empresa Ministrante</th>
                     <th>Nome do Funcionário</th>
                     <th>CPF</th>
+                    <th>Categoria do Funcionário</th>
+                    <th>Situação do Funcionário</th>
                     <th>Data da Realização</th>
                     <th>Data de Validade</th>
                     <th>Instrutor</th>
@@ -238,9 +239,11 @@ $conn->close();
                     <?php foreach ($HistoricoTreinamentos as $HistoricoTreinamento): ?>
                         <tr data-idHistoricoTreinamento="<?php echo htmlspecialchars($HistoricoTreinamento['idHistoricoTreinamento']); ?>">
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['Treinamentos.Nome']); ?></td>
-                            <td><?php echo htmlspecialchars($HistoricoTreinamento['Treinamentos.Empresa_Fornecedora']); ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['Empresa.Nome']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['Funcionarios.Nome']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['Funcionarios_CPF']); ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['Categorias.Nome']); ?></td>
+                            <td><?php echo $HistoricoTreinamento['Funcionarios.Situacao'] == 1 ? 'Ativo' : 'Inativo'; ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['Data_Realizacao']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['Data_Validade']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['Instrutor']); ?></td>
