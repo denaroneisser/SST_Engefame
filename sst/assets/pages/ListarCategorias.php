@@ -178,8 +178,8 @@ $conn->close();
                     <input type="text" name="search" placeholder="Pesquisar" class="search-bar" value="<?php echo htmlspecialchars($search); ?>">
                     <select name="searchColumn" class="search-column">
                         <option value="">Todas as colunas</option>
-                        <option value="idCategoria" <?php echo $searchColumn == 'Nome' ? 'selected' : ''; ?>>Nome</option>
-                        <option value="Nome" <?php echo $searchColumn == 'IdCategoria' ? 'selected' : ''; ?>>CPF</option>
+                        <option value="idCategoria" <?php echo $searchColumn == 'IdCategoria' ? 'selected' : ''; ?>>IdCategoria</option>
+                        <option value="Nome" <?php echo $searchColumn == 'Nome' ? 'selected' : ''; ?>>Nome</option>
                     </select>
                     <button type="submit" class="btn">Filtrar</button>
                 </form>
@@ -198,7 +198,9 @@ $conn->close();
                     <!-- Se houver funcionários, percorre cada um deles -->
                     <?php foreach ($categorias as $categoria): ?>
                         <!-- Para cada funcionário, cria uma linha na tabela -->
-                        <tr data-cpf="<?php echo htmlspecialchars($categoria['idCategoria']); ?>">
+                        <tr data-idCategoria="<?php echo htmlspecialchars($categoria['idCategoria']); ?>">
+                            <!-- Exibe a categoria do funcionário -->
+                            <td><?php echo htmlspecialchars($categoria['idCategoria']); ?></td>
                             <!-- Exibe a categoria do funcionário -->
                             <td><?php echo htmlspecialchars($categoria['Nome']); ?></td>
                             <!-- Exibe o nome do funcionário -->
@@ -245,15 +247,15 @@ $conn->close();
     function realizarAcao(acao) {
         var selectedRow = document.querySelector('.employee-table tr.selected');
         if (selectedRow) {
-            var cpf = selectedRow.getAttribute('data-cpf');
+            var cpf = selectedRow.getAttribute('data-idCategoria');
             var url = "";
             if (acao === 'alterar') {
-                url = "AlterarFuncionario.php?cpf=" + cpf;
+                url = "AlterarFuncionario.php?idCategoria=" + idCategoria;
             } else if (acao === 'visualizar') {
-                url = "VisualizarFuncionario.php?cpf=" + cpf;
+                url = "VisualizarFuncionario.php?idCategoria=" + idCategoria;
             } else if (acao === 'apagar') {
                 if (confirm("Tem certeza que deseja apagar este funcionário?")) {
-                    url = "ApagarFuncionario.php?cpf=" + cpf;
+                    url = "ApagarFuncionario.php?idCategoria=" + idCategoria;
                     window.location.href = url;
                     return;
                 } else {
@@ -288,7 +290,7 @@ $conn->close();
         });
 
         var selected_id = "<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>";
-        var selectedRow = document.querySelector('.employee-table tr[data-cpf="' + selected_id + '"]');
+        var selectedRow = document.querySelector('.employee-table tr[data-idCategoria="' + selected_id + '"]');
         if (selectedRow) {
             selectedRow.classList.add('selected');
         }
