@@ -48,7 +48,7 @@ $total_items = $result_count->fetch_assoc()['total'];
 $total_pages = ceil($total_items / $items_per_page);
 
 // Monta a query SQL para buscar os funcionários no banco de dados com limite e offset
-$sql = "SELECT SELECT 
+$sql = "SELECT 
 categorias.idCategoria,
 categorias.Nome,
 funcionarios.Nome,
