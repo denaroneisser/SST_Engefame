@@ -3,8 +3,8 @@
 <head>
 <?php
 //IMPORTANDO BIBLIOTECAS/DEPENDENCIAS
-require_once("../objects/categorias.php");
-require_once("../objects/funcionarios.php");
+require_once("../objects/Categorias.php");
+require_once("../objects/Funcionarios.php");
 ?>
 <link rel="stylesheet" href="../styles/CadastroFuncionario.css">
 <script src="../scripts/CadastroFuncionario.js"></script>
@@ -22,7 +22,7 @@ require_once("../objects/funcionarios.php");
                     <option value="">Selecione</option>
                     <?php
                         // Chame a função getCategorias para obter todas as categorias
-                        $categorias = GetCategoriaALL();
+                        $categorias = GetCategoriasALL();
                         // Verifique se há categorias e exiba-as
                         if ($categorias) {
                             foreach ($categorias as $categoria) {
