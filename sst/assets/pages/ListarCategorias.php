@@ -250,11 +250,11 @@ $conn->close();
             var cpf = selectedRow.getAttribute('data-idCategoria');
             var url = "";
             if (acao === 'alterar') {
-                url = "AlterarFuncionario.php?idCategoria=" + idCategoria;
+                url = "AlterarCategoria.php?idCategoria=" + idCategoria;
             } else if (acao === 'visualizar') {
-                url = "VisualizarFuncionario.php?idCategoria=" + idCategoria;
+                url = "VisualizarCategoria.php?idCategoria=" + idCategoria;
             } else if (acao === 'apagar') {
-                if (confirm("Tem certeza que deseja apagar este funcionário?")) {
+                if (confirm("Tem certeza que deseja apagar esta Categoria?")) {
                     url = "ApagarFuncionario.php?idCategoria=" + idCategoria;
                     window.location.href = url;
                     return;
