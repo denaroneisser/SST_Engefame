@@ -69,12 +69,12 @@ require_once("../objects/Funcionarios.php");
     
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $resultado = setFuncionario($_POST['nome'],$_POST['cpf'],$_POST['situacao'],$_POST['categoria']);
+        $resultado = setFuncionarioAlterar($_POST['nome'],$_POST['cpf'],$_POST['situacao'],$_POST['categoria']);
             if($resultado==true){
-                echo("<script>alert('Usuário Cadastrado com Sucesso!');</script>");
+                echo("<script>alert('Usuário alterado com Sucesso!');</script>");
                 echo("<script>window.close();</script>");
             }else{
-                echo("<script>alert('CPF Já Existente na Base de Dados');</script>");
+                echo("<script>alert('Falha ao alterar Funcionário!');</script>");
                 echo($resultado);
             }
  
