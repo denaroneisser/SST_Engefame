@@ -39,7 +39,7 @@ function setCategoria($C_Nome){
 
 
 //FUNÇÃO DE ALTERAR CATEGORIA NO BANCO DE DADOS
-function setAlterarCategoria($C_Nome,$C_idCategoria){
+function setCategoriaAlterar($C_Nome,$C_idCategoria){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
         require "Conexao.php";
                 // CRIANDO O INSERT PARA INCLUIR CATEGORIA
