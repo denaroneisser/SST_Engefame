@@ -88,12 +88,12 @@ $result = $conn->query($sql);
 // Verifica se houve erro na execução da query
 if ($result === false) {
     echo "Erro na consulta: " . $conn->error;
-    $pessoas = [];
+    $HistoricoTreinamentos = [];
 } else {
-    $pessoas = [];
+    $HistoricoTreinamentos = [];
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $pessoas[] = $row;
+            $HistoricoTreinamentos[] = $row;
         }
     }
 }
