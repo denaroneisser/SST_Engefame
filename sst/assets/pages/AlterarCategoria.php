@@ -23,7 +23,7 @@ require_once("../objects/Categorias.php");
         <form action="AlterarCategoria.php" method="POST">
             <div class="form-group">
                 <label for="idCategoria">ID da Categoria</label>
-                <input type="number" id="idCategoria" disabled name="idCategoria" value ="<?php if(Isset($categoria['idCategoria'])){echo $categoria['idCategoria']; }else{ echo "Erro ao Trazer Dados";} ?>" required>
+                <input type="number" id="idCategoria" disabled name="idcategoria" value ="<?php if(Isset($categoria['idCategoria'])){echo $categoria['idCategoria']; }else{ echo "Erro ao Trazer Dados";} ?>" required>
             </div>
             <div class="form-group">
                 <label for="nome">Nome</label>
@@ -37,7 +37,7 @@ require_once("../objects/Categorias.php");
     
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $resultado = setCategoriaAlterar($_POST['nome'],$_POST['idCategoria']);
+        $resultado = setCategoriaAlterar($_POST['nome'],$_POST['idcategoria']);
             if($resultado==true){
                 echo("<script>alert('Categoria alterada com Sucesso!');</script>");
                 echo("<script>window.close();</script>");
