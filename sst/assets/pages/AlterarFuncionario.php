@@ -51,7 +51,8 @@ require_once("../objects/Funcionarios.php");
             </div>
             <div class="form-group">
                 <label for="cpf">CPF</label>
-                <input type="text" id="cpf" disabled name="cpf" value ="<?php if(Isset($funcionario['CPF'])){echo $funcionario['CPF']; }else{ echo "Erro ao Trazer Dados";} ?>" required oninput="mascaraCPF(event)" maxlength="14">
+                <input type="text"  disabled value ="<?php if(Isset($funcionario['CPF'])){echo $funcionario['CPF']; }else{ echo "Erro ao Trazer Dados";} ?>" required oninput="mascaraCPF(event)" maxlength="14">
+                <input type="hidden" id="cpf" disabled name="cpf" value ="<?php if(Isset($funcionario['CPF'])){echo $funcionario['CPF']; }else{ echo "Erro ao Trazer Dados";} ?>" required oninput="mascaraCPF(event)" maxlength="14">
             </div>
             <div class="form-group">
                 <label for="situacao">Situação</label>

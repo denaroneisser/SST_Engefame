@@ -23,7 +23,8 @@ require_once("../objects/Categorias.php");
         <form action="AlterarCategoria.php" method="POST">
             <div class="form-group">
                 <label for="idCategoria">ID da Categoria</label>
-                <input type="number" id="idCategoria" disabled name="idcategoria" value ="<?php if(Isset($categoria['idCategoria'])){echo $categoria['idCategoria']; }else{ echo "Erro ao Trazer Dados";} ?>" required>
+                <input type="number" disabled value ="<?php if(Isset($categoria['idCategoria'])){echo $categoria['idCategoria']; }else{ echo "Erro ao Trazer Dados";} ?>" required>
+                <input type="hidden" id="idCategoria" disabled name="idcategoria" value ="<?php if(Isset($categoria['idCategoria'])){echo $categoria['idCategoria']; }else{ echo "Erro ao Trazer Dados";} ?>" required>
             </div>
             <div class="form-group">
                 <label for="nome">Nome</label>
