@@ -203,10 +203,8 @@ $conn->close();
                             <td><?php echo htmlspecialchars($categoria['Nome']); ?></td>
                             <!-- Exibe o nome do funcionário -->
                         </tr>
-                    <?php endforeach; ?>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
+                    <?php endforeach; ?>    
+                    <?php else: ?>
                     <tr>
                         <td colspan="4">Nenhum resultado encontrado</td>
                     </tr>
