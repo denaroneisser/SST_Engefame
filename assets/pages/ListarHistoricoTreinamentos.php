@@ -85,6 +85,7 @@ $sql = "SELECT
     historico_treinamentos.Data_Realizacao,
     historico_treinamentos.Data_Validade,
     historico_treinamentos.Comprovacao,
+    historico_treinamentos.Empresa_Fornecedora AS empresa,
     historico_treinamentos.Modalidade,
     historico_treinamentos.Instrutor,
     historico_treinamentos.Carga_Horaria,
@@ -268,6 +269,7 @@ $conn->close();
                         <tr data-idHistoricoTreinamento="<?php echo htmlspecialchars($HistoricoTreinamento['idHistorico_treinamento']); ?>">
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['idHistorico_treinamento']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['treinamento_nome']); ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['empresa']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['funcionario_nome']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['CPF']); ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['categoria_nome']); ?></td>
