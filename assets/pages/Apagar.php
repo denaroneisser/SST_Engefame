@@ -8,6 +8,7 @@ require_once("../objects/Funcionarios.php");
 require_once("../objects/Treinamentos.php");
 require_once("../objects/Historico_Treinamentos.php");
 ?>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel="stylesheet" href="../styles/Apagar.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,25 +26,25 @@ require_once("../objects/Historico_Treinamentos.php");
         <h2>Apagar</h2>
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if($_POST['idTreinamento']){
+        if(isset($_POST['idTreinamento'])){
             if(setTreinamentoExcluir($_POST['idTreinamento'])){
                 echo "<div class='alert alert-success' role='alert'>Treinamento apagada!</div>";
                 unset($_POST['idTreinamento']);
             }
         }
-        if($_POST['idHistoricoTreinamento']){
+        if(isset($_POST['idHistoricoTreinamento'])){
             if(setHistoricoTreinamentoExcluir($_POST['idHistoricoTreinamento'])){
                 echo "<div class='alert alert-success' role='alert'>Turma apagado!</div>";
                 unset($_POST['idHistoricoTreinamento']);
             }
         }
-        if($_POST['cpf']){
+        if(isset($_POST['cpf'])){
             if(setFuncionarioExcluir($_POST['cpf'])){
                 echo "<div class='alert alert-success' role='alert'>Funcionário apagado!</div>";
                 unset($_POST['cpf']);
             }
         }
-        if($_POST['idCategoria']){
+        if(isset($_POST['idCategoria'])){
             if(setCategoriaExcluir($_POST['idCategoria'])){
                 echo "<div class='alert alert-success' role='alert'>Categoria apagada!</div>";
                 unset($_POST['idCategoria']);
