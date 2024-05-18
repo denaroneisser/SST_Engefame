@@ -10,7 +10,6 @@ Funções de GET/SET para a Tabela Treinamentos
 @Tabela T_idTreinamento          Auto Increment.
         T_Nome                  Nome do Treinamento.
         T_Descricao             Descrição do Treinamento.
-        T_Empresa_Fornecedora   Empresa que deu o Treinamento.
 @Tabela
 /*/
 //-----------------------------------------------------------------------
@@ -18,16 +17,15 @@ Funções de GET/SET para a Tabela Treinamentos
 
 
 //FUNÇÃO DE INCLUIR TREINAMENTO NO BANCO DE DADOS
-function setTreinamento($T_Nome,$T_Descricao,$T_Empresa_Fornecedora){
+function setTreinamento($T_Nome,$T_Descricao){
 //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O INSERT PARA INCLUIR CATEGORIA
-    $setTreinamentoSQL_Insert = "INSERT INTO Treinamentos (Nome,Descricao,Empresa_Fornecedora) VALUES (?,?,?)";
+    $setTreinamentoSQL_Insert = "INSERT INTO Treinamentos (Nome,Descricao) VALUES (?,?)";
     $setTreinamentoStament_Insert = $pdo->prepare($setTreinamentoSQL_Insert); 
      // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
      $setTreinamentoStament_Insert->bindParam(1, $T_Nome);
      $setTreinamentoStament_Insert->bindParam(2, $T_Descricao);
-     $setTreinamentoStament_Insert->bindParam(3, $T_Empresa_Fornecedora); 
     // EXECUTANDO O SQL
         try {
             $setTreinamentoStament_Insert->execute(); 
