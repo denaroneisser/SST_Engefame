@@ -147,7 +147,7 @@ $conn->close();
         }
         .container {
             width: 90%;
-            max-width: 1920px;
+            max-width: 1200px;
             margin: 20px auto;
             background-color: #fff;
             padding: 20px;
