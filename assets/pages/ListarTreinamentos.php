@@ -233,7 +233,7 @@ $conn->close();
 
     <script>
         function abrirPopupIncluir() {
-            var popup = window.open("incluir.html", "Incluir Treinamento", "width=600,height=400");
+            var popup = window.open("CadastroTreinamento.php", "Incluir Treinamento", "width=600,height=400");
             popup.focus();
         }
 
