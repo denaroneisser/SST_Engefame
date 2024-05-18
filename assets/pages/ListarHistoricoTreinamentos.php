@@ -321,15 +321,17 @@ $conn->close();
     }
 
     function realizarAcao(acao) {
-        var selectedRow = document.querySelector('.employee-table tr.selected');
-        if (selectedRow) {
-            var idHistoricoTreinamento = selectedRow.getAttribute('data-idHistoricoTreinamento');
-            var url = "";
-            if (acao === 'alterar') {
-                url = "AlterarHistoricoTreinamento.php?idHistoricoTreinamento=" + idHistoricoTreinamento;
-            } else if (acao === 'visualizar') {
-                url = "VisualizarHistoricoTreinamento.php?idHistoricoTreinamento=" + idHistoricoTreinamento;
-            } else if (acao === 'apagar') {
+    var selectedRow = document.querySelector('.employee-table tr.selected');
+    if (selectedRow) {
+        var idHistoricoTreinamento = selectedRow.getAttribute('data-idHistoricoTreinamento');
+        var url = "";
+
+        if (acao === 'alterar') {
+            url = "AlterarHistoricoTreinamento.php?idHistoricoTreinamento=" + idHistoricoTreinamento;
+        } else if (acao === 'visualizar') {
+            url = "VisualizarHistoricoTreinamento.php?idHistoricoTreinamento=" + idHistoricoTreinamento;
+        } else if (acao === 'apagar') {
+            if (confirm("Tem certeza que deseja apagar este histórico de treinamento?")) {
                 var form = document.createElement('form');
                 form.method = 'POST';
                 form.action = 'Apagar.php';
@@ -343,19 +345,23 @@ $conn->close();
                 form.appendChild(input);
                 document.body.appendChild(form);
                 form.submit();
-                } else {
-                    return;
-                }
+                return; // Evita a execução do restante do código
+            } else {
+                return; // Evita a execução do restante do código
             }
-            var largura = 600;
-            var altura = 400;
-            var esquerda = (screen.width - largura) / 2;
-            var topo = (screen.height - altura) / 2;
-            window.open(url, "_blank", "width=" + largura + ", height=" + altura + ", left=" + esquerda + ", top=" + topo);
-        } else {
-            alert("Por favor, selecione uma linha antes de prosseguir.");
         }
+
+        // Configuração para abrir uma nova janela popup
+        var largura = 600;
+        var altura = 400;
+        var esquerda = (screen.width - largura) / 2;
+        var topo = (screen.height - altura) / 2;
+        window.open(url, "_blank", "width=" + largura + ", height=" + altura + ", left=" + esquerda + ", top=" + topo);
+    } else {
+        alert("Por favor, selecione uma linha antes de prosseguir.");
     }
+}
+
 
     function selecionarLinha(event) {
         var tr = event.target.closest('tr');

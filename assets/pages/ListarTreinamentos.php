@@ -238,47 +238,58 @@ $conn->close();
         }
 
         function realizarAcao(acao) {
-            var selectedRow = document.querySelector('.employee-table tr.selected');
-            if (!selectedRow) {
-                alert('Selecione um treinamento primeiro!');
-                return;
-            }
+    var selectedRow = document.querySelector('.employee-table tr.selected');
+    if (!selectedRow) {
+        alert('Selecione um treinamento primeiro!');
+        return;
+    }
 
-            var idTreinamento = selectedRow.getAttribute('data-idtreinamento');
-            if (!idTreinamento) {
-                alert('ID de treinamento não encontrado!');
-                return;
-            }
+    var idTreinamento = selectedRow.getAttribute('data-idtreinamento');
+    if (!idTreinamento) {
+        alert('ID de treinamento não encontrado!');
+        return;
+    }
 
-            switch (acao) {
-                case 'alterar':
-                    var popup = window.open("AlterarTreinamento.php?idTreinamento=" + idTreinamento, "Alterar Treinamento", "width=600,height=400");
-                    popup.focus();
-                    break;
-                case 'visualizar':
-                    var popup = window.open("visualizar.php?idTreinamento=" + idTreinamento, "Visualizar Treinamento", "width=600,height=400");
-                    popup.focus();
-                    break;
-                case 'apagar':
-                var form = document.createElement('form');
-                form.method = 'POST';
-                form.action = 'Apagar.php';
+    switch (acao) {
+        case 'alterar':
+            var popup = window.open("AlterarTreinamento.php?idTreinamento=" + idTreinamento, "Alterar Treinamento", "width=600,height=400");
+            popup.focus();
+            break;
+        case 'visualizar':
+            var popup = window.open("visualizar.php?idTreinamento=" + idTreinamento, "Visualizar Treinamento", "width=600,height=400");
+            popup.focus();
+            break;
+        case 'apagar':
+            if (confirm('Tem certeza que deseja apagar este treinamento?')) {
+                var form = document.createElement("form");
+                form.method = "POST";
+                form.action = "apagar.php";
+                form.target = "popupWindow";
 
-                // Cria um campo de input para o idTreinamento
-                var input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'idTreinamento';
-                input.value = idTreinamento;
+                var inputAcao = document.createElement("input");
+                inputAcao.type = "hidden";
+                inputAcao.name = "acao";
+                inputAcao.value = "apagar";
+                form.appendChild(inputAcao);
 
-                form.appendChild(input);
+                var inputIdTreinamento = document.createElement("input");
+                inputIdTreinamento.type = "hidden";
+                inputIdTreinamento.name = "idTreinamento";
+                inputIdTreinamento.value = idTreinamento;
+                form.appendChild(inputIdTreinamento);
+
                 document.body.appendChild(form);
+
+                var popup = window.open("", "popupWindow", "width=600,height=400");
                 form.submit();
-                    }
-                    break;
-                default:
-                    alert('Ação inválida!');
+
+                document.body.removeChild(form);
             }
-        }
+            break;
+        default:
+            alert('Ação inválida!');
+    }
+}
 
         document.querySelectorAll('.employee-table tr').forEach(function(row) {
             row.addEventListener('click', function() {

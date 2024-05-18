@@ -245,21 +245,22 @@ $conn->close();
     }
 
     function realizarAcao(acao) {
-        var selectedRow = document.querySelector('.employee-table tr.selected');
-        if (selectedRow) {
-            var idCategoria = selectedRow.getAttribute('data-idcategoria');
-            var url = "";
-            if (acao === 'alterar') {
-                url = "AlterarCategoria.php?idCategoria=" + idCategoria;
-            } else if (acao === 'visualizar') {
-                url = "VisualizarCategoria.php?idCategoria=" + idCategoria;
-            } else if (acao === 'apagar') {
-                if (confirm("Tem certeza que deseja apagar esta Categoria?")) {
-                    var form = document.createElement('form');
+    var selectedRow = document.querySelector('.employee-table tr.selected');
+    if (selectedRow) {
+        var idCategoria = selectedRow.getAttribute('data-idcategoria');
+        var url = "";
+
+        if (acao === 'alterar') {
+            url = "AlterarCategoria.php?idCategoria=" + idCategoria;
+        } else if (acao === 'visualizar') {
+            url = "VisualizarCategoria.php?idCategoria=" + idCategoria;
+        } else if (acao === 'apagar') {
+            if (confirm("Tem certeza que deseja apagar esta Categoria?")) {
+                var form = document.createElement('form');
                 form.method = 'POST';
                 form.action = 'Apagar.php';
 
-                // Cria um campo de input para o idHistoricoTreinamento
+                // Cria um campo de input para o idCategoria
                 var input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = 'idCategoria';
@@ -268,20 +269,23 @@ $conn->close();
                 form.appendChild(input);
                 document.body.appendChild(form);
                 form.submit();
-                    return;
-                } else {
-                    return;
-                }
+                return; // Evita a execução do restante do código
+            } else {
+                return; // Evita a execução do restante do código
             }
-            var largura = 600;
-            var altura = 400;
-            var esquerda = (screen.width - largura) / 2;
-            var topo = (screen.height - altura) / 2;
-            window.open(url, "_blank", "width=" + largura + ", height=" + altura + ", left=" + esquerda + ", top=" + topo);
-        } else {
-            alert("Por favor, selecione uma linha antes de prosseguir.");
         }
+
+        // Configuração para abrir uma nova janela popup
+        var largura = 600;
+        var altura = 400;
+        var esquerda = (screen.width - largura) / 2;
+        var topo = (screen.height - altura) / 2;
+        window.open(url, "_blank", "width=" + largura + ", height=" + altura + ", left=" + esquerda + ", top=" + topo);
+    } else {
+        alert("Por favor, selecione uma linha antes de prosseguir.");
     }
+}
+
 
     function selecionarLinha(event) {
         var tr = event.target.closest('tr');
