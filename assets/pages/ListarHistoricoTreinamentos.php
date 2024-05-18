@@ -330,10 +330,19 @@ $conn->close();
             } else if (acao === 'visualizar') {
                 url = "VisualizarHistoricoTreinamento.php?idHistoricoTreinamento=" + idHistoricoTreinamento;
             } else if (acao === 'apagar') {
-                if (confirm("Tem certeza que deseja apagar este funcionário?")) {
-                    url = "ApagaridHistoricoTreinamento.php?idHistoricoTreinamento=" + idHistoricoTreinamento;
-                    window.location.href = url;
-                    return;
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'Apagar.php';
+
+                // Cria um campo de input para o idHistoricoTreinamento
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'idHistoricoTreinamento';
+                input.value = idHistoricoTreinamento;
+
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
                 } else {
                     return;
                 }

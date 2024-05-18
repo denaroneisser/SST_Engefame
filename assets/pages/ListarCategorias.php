@@ -255,8 +255,19 @@ $conn->close();
                 url = "VisualizarCategoria.php?idCategoria=" + idCategoria;
             } else if (acao === 'apagar') {
                 if (confirm("Tem certeza que deseja apagar esta Categoria?")) {
-                    url = "ApagarCategoria.php?idCategoria=" + idCategoria;
-                    window.location.href = url;
+                    var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'Apagar.php';
+
+                // Cria um campo de input para o idHistoricoTreinamento
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'idCategoria';
+                input.value = idCategoria;
+
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
                     return;
                 } else {
                     return;

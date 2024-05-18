@@ -258,8 +258,19 @@ $conn->close();
                 url = "VisualizarFuncionario.php?cpf=" + cpf;
             } else if (acao === 'apagar') {
                 if (confirm("Tem certeza que deseja apagar este funcionário?")) {
-                    url = "ApagarFuncionario.php?cpf=" + cpf;
-                    window.location.href = url;
+                    var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'Apagar.php';
+
+                // Cria um campo de input para o cpf
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'cpf';
+                input.value = cpf;
+
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
                     return;
                 } else {
                     return;

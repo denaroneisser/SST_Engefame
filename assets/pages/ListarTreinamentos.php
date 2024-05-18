@@ -260,8 +260,19 @@ $conn->close();
                     popup.focus();
                     break;
                 case 'apagar':
-                    if (confirm('Tem certeza que deseja apagar este treinamento?')) {
-                        window.location.href = "apagar.php?idTreinamento=" + idTreinamento;
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'Apagar.php';
+
+                // Cria um campo de input para o idTreinamento
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'idTreinamento';
+                input.value = idTreinamento;
+
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
                     }
                     break;
                 default:
