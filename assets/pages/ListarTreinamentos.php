@@ -252,7 +252,7 @@ $conn->close();
 
             switch (acao) {
                 case 'alterar':
-                    var popup = window.open("AlterarTreinamentos.php?idTreinamento=" + idTreinamento, "Alterar Treinamento", "width=600,height=400");
+                    var popup = window.open("AlterarTreinamento.php?idTreinamento=" + idTreinamento, "Alterar Treinamento", "width=600,height=400");
                     popup.focus();
                     break;
                 case 'visualizar':
