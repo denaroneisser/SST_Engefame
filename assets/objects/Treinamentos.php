@@ -43,17 +43,16 @@ function setTreinamento($T_Nome,$T_Descricao,$T_Empresa_Fornecedora){
 
 
 //FUNÇÃO DE ALTERAR TREINAMENTO NO BANCO DE DADOS
-function setAlterarTreinamento($T_idCategoria,$T_Nome,$T_Descricao,$T_Empresa_Fornecedora){
+function setTreinamentoAlterar($T_idCategoria,$T_Nome,$T_Descricao){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
         require "Conexao.php";
                 // CRIANDO O INSERT PARA INCLUIR CATEGORIA
-                $setAlterarCategoriaSQL = "UPDATE Treinamentos SET Nome=?,Descricao=?,Empresa_Fornecedora=? WHERE idTreinamento= ?";
+                $setAlterarCategoriaSQL = "UPDATE Treinamentos SET Nome=?,Descricao=? WHERE idTreinamento= ?";
                 $setAlterarCategoriaStament = $pdo->prepare($setAlterarCategoriaSQL); 
                 // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
                 $setAlterarCategoriaStament->bindValue(1, $T_Nome,PDO::PARAM_STR); 
                 $setAlterarCategoriaStament->bindValue(2, $T_Descricao,PDO::PARAM_STR);
-                $setAlterarCategoriaStament->bindValue(3, $T_Empresa_Fornecedora,PDO::PARAM_STR);
-                $setAlterarCategoriaStament->bindValue(4, $T_idCategoria,PDO::PARAM_INT); 
+                $setAlterarCategoriaStament->bindValue(3, $T_idCategoria,PDO::PARAM_INT); 
                 // EXECUTANDO O SQL
                 try {
                     $setAlterarCategoriaStament->execute(); 
