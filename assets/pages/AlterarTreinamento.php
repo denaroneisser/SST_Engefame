@@ -32,7 +32,7 @@ require_once("../objects/Treinamentos.php");
             </div>
             <div class="form-group">
                 <label for="nome">Descrição</label>
-                <textarea id="Descricao" name="descricao" value ="<?php if(Isset($treinamento['Descricao'])){echo $treinamento['Descricao']; }else{ echo "Erro ao Trazer Dados";} ?>" required  rows="4" cols="50" maxlength="200">
+                <textarea id="Descricao" name="descricao" required  rows="4" cols="40" maxlength="200"><?php if(Isset($treinamento['Descricao'])){echo $treinamento['Descricao']; }else{ echo "Erro ao Trazer Dados";} ?></textarea>
             </div>
             <div class="form-group">
                 <button type="submit">Salvar Alteração</button>
