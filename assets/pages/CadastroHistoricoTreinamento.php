@@ -164,17 +164,39 @@ require_once("../objects/Empresas.php");
     </script>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $i = "<script>informacoesSelecionadas.length</script>";
-        $array = "<script>informacoesSelecionadas[]</script";
-        //for($j=0;$j<=$i,$j++;){
-            //include_once ( "../objects/HistoricoTreinamentos.php");
-            $resulta = setHistoricoTreinamento($_POST['idTreinamento'],$array['cpf'],$_POST['instrutor'],$_POST['data_realizacao'],$_POST['data_validade'],$_POST['comprovacao'],$_POST['modalidade'],$_POST['carga_horaria'],$_POST['curso_pago'],$_POST['valor_por_pessoa'],$_POST['idEmpresas']);
+    $idTreinamento = $_POST['idTreinamento'];
+    $idEmpresa = $_POST['idEmpresa'];
+    $data_realizacao = $_POST['data_realizacao'];
+    $data_validade = $_POST['data_validade'];
+    $instrutor = $_POST['instrutor'];
+    $carga_horaria = $_POST['carga_horaria'];
+    $curso_pago = $_POST['curso_pago'];
+    $preco_unitario = $_POST['preco_unitario'];
+    $modalidade = $_POST['modalidade'];
+    $comprovacao = $_POST['comprovacao'];
+    $funcionarios = json_decode($_POST['informacoesSelecionadas'], true); // Decodifica os funcionários selecionados
 
-        //}
-        
- 
-        } else {
-            }
+    foreach ($funcionarios as $cpf) {
+        $result = setHistoricoTreinamento(
+            $idTreinamento,
+            $cpf,
+            $instrutor,
+            $data_realizacao,
+            $data_validade,
+            $comprovacao,
+            $modalidade,
+            $carga_horaria,
+            $curso_pago,
+            $preco_unitario,
+            $idEmpresa
+        );
+    }
 
+    if ($result) {
+        echo("<script>alert('Histórico de Treinamento Cadastrado com Sucesso!');</script>");
+    } else {
+        echo("<script>alert('Erro ao Cadastrar Histórico de Treinamento');</script>");
+    }
+}
 
 ?>
