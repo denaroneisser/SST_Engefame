@@ -12,12 +12,15 @@
             <label for="funcionario">Buscar Funcionário por Nome:</label>
             <input type="text" id="funcionario" name="funcionario" oninput="buscarFuncionarios(this.value)">
             <div id="funcionario-lists" class="funcionario-lists"></div>
-                <div id="informacoes-selecionadas" class="informacoes-selecionadas"></div>
+            <div id="informacoes-selecionadas" class="informacoes-selecionadas"></div>
             <input type="submit" value="Adicionar">
         </form>
     </div>
 
     <script>
+        // Array para armazenar as informações selecionadas
+        const informacoesSelecionadas = [];
+
         // Função para buscar funcionários por nome
         function buscarFuncionarios(nome) {
             // Verifica se o campo de busca está vazio
@@ -35,26 +38,31 @@
             xhttp.open("GET", `buscarFuncionarios.php?nome=${nome}`, true);
             xhttp.send();
         }
+
+        // Função para adicionar uma informação selecionada
         function adicionarInformacao(cpf, nome) {
+            // Verifica se a informação já foi adicionada
             if (!informacoesSelecionadas.includes(cpf)) {
                 informacoesSelecionadas.push(cpf);
-                const container = document.getElementById('funcionario-lists');
+                const container = document.getElementById('informacoes-selecionadas');
                 const div = document.createElement('div');
                 div.className = 'informacao-selecionada';
-                div.textContent = nome,cpf;
+                div.textContent = `${nome} - ${cpf}`;
 
                 const button = document.createElement('button');
                 button.textContent = 'Remover';
-                button.onclick = () => removerInformacao(id, div);
+                button.onclick = () => removerInformacao(cpf, div);
 
                 div.appendChild(button);
                 container.appendChild(div);
             } else {
-                alert('Essa informação já foi adicionada.');
+                alert('Esta informação já foi adicionada.');
             }
         }
-        function removerInformacao(id, element) {
-            const index = informacoesSelecionadas.indexOf(id);
+
+        // Função para remover uma informação selecionada
+        function removerInformacao(cpf, element) {
+            const index = informacoesSelecionadas.indexOf(cpf);
             if (index !== -1) {
                 informacoesSelecionadas.splice(index, 1);
                 element.remove();
