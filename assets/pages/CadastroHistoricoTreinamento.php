@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <?php
-    //IMPORTANDO BIBLIOTECAS/DEPENDENCIAS
+    // IMPORTANDO BIBLIOTECAS/DEPENDENCIAS
     require_once("../objects/Categorias.php");
     require_once("../objects/Funcionarios.php");
     require_once("../objects/Treinamentos.php");
@@ -13,27 +13,25 @@
     <script src="../scripts/CadastroHistoricoTreinamento.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro Funcionarios</title>
+    <title>Cadastro de Turmas do Treinamento</title>
 </head>
 <body>
     <div class="container">
         <h2>Cadastro de Turmas do Treinamento</h2>
-        <form action="CadastroHistoricoTreinamento.php" method="POST">
+        <form id="treinamentoForm" action="CadastroHistoricoTreinamento.php" method="POST">
             <div class="form-group">
-                <label for="idtreinamento">Nome do Treinamento</label>
-                <select id="idtreinamento" name="idTreinamento" required>
+                <label for="idTreinamento">Nome do Treinamento</label>
+                <select id="idTreinamento" name="idTreinamento" required>
                     <option value="">Selecione</option>
                     <?php
-                        // Chame a função getCategorias para obter todas as categorias
-                        $treinamentos = GetTreinamentosALL();
-                        // Verifique se há categorias e exiba-as
-                        if ($treinamentos) {
-                            foreach ($treinamentos as $treinamento) {
-                                echo "<option value='" . $treinamento["idTreinamento"] . "'>" . $treinamento["Nome"] . "</option>";
-                            }
-                        } else {
-                            echo "Erro ao obter Treinamentos.";
+                    $treinamentos = GetTreinamentosALL();
+                    if ($treinamentos) {
+                        foreach ($treinamentos as $treinamento) {
+                            echo "<option value='" . $treinamento["idTreinamento"] . "'>" . $treinamento["Nome"] . "</option>";
                         }
+                    } else {
+                        echo "Erro ao obter Treinamentos.";
+                    }
                     ?>
                 </select>
             </div>
@@ -42,14 +40,14 @@
                 <select id="idEmpresa" name="idEmpresa" required>
                     <option value="">Selecione</option>
                     <?php
-                        $empresas = GetEmpresasALL();
-                        if ($empresas) {
-                            foreach ($empresas as $empresa) {
-                                echo "<option value='" . $empresa["idEmpresas"] . "'>" . $empresa["Nome"] . "</option>";
-                            }
-                        } else {
-                            echo "Erro ao obter Empresas.";
+                    $empresas = GetEmpresasALL();
+                    if ($empresas) {
+                        foreach ($empresas as $empresa) {
+                            echo "<option value='" . $empresa["idEmpresas"] . "'>" . $empresa["Nome"] . "</option>";
                         }
+                    } else {
+                        echo "Erro ao obter Empresas.";
+                    }
                     ?>
                 </select>
             </div>
@@ -98,6 +96,7 @@
                 <div id="funcionario-lists" class="funcionario-lists"></div>
                 <div id="informacoes-selecionadas" class="informacoes-selecionadas"></div>
             </div>
+            <input type="hidden" id="informacoesSelecionadas" name="informacoesSelecionadas">
             <div class="form-group">
                 <button type="submit">Cadastrar</button>
             </div>
@@ -105,10 +104,8 @@
     </div>
 
     <script>
-        // Array para armazenar as informações selecionadas
         const informacoesSelecionadas = [];
 
-        // Função para buscar funcionários por nome
         function buscarFuncionarios(nome) {
             if (nome === '') {
                 document.getElementById('funcionario-lists').innerHTML = '';
@@ -124,7 +121,6 @@
             xhttp.send();
         }
 
-        // Função para adicionar uma informação selecionada
         function adicionarInformacao(cpf, nome) {
             if (!informacoesSelecionadas.includes(cpf)) {
                 informacoesSelecionadas.push(cpf);
@@ -139,17 +135,22 @@
 
                 div.appendChild(button);
                 container.appendChild(div);
+
+                // Atualiza o campo hidden com os CPFs selecionados
+                document.getElementById('informacoesSelecionadas').value = JSON.stringify(informacoesSelecionadas);
             } else {
                 alert('Esta informação já foi adicionada.');
             }
         }
 
-        // Função para remover uma informação selecionada
         function removerInformacao(cpf, element) {
             const index = informacoesSelecionadas.indexOf(cpf);
             if (index !== -1) {
                 informacoesSelecionadas.splice(index, 1);
                 element.remove();
+                
+                // Atualiza o campo hidden com os CPFs selecionados
+                document.getElementById('informacoesSelecionadas').value = JSON.stringify(informacoesSelecionadas);
             }
         }
     </script>
@@ -168,26 +169,30 @@
         $comprovacao = $_POST['comprovacao'];
         $funcionarios = json_decode($_POST['informacoesSelecionadas'], true); // Decodifica os funcionários selecionados
 
-        foreach ($funcionarios as $cpf) {
-            $result = setHistoricoTreinamento(
-                $idTreinamento,
-                $cpf,
-                $instrutor,
-                $data_realizacao,
-                $data_validade,
-                $comprovacao,
-                $modalidade,
-                $carga_horaria,
-                $curso_pago,
-                $preco_unitario,
-                $idEmpresa
-            );
-        }
+        if ($funcionarios) {
+            foreach ($funcionarios as $cpf) {
+                $result = setHistoricoTreinamento(
+                    $idTreinamento,
+                    $cpf,
+                    $instrutor,
+                    $data_realizacao,
+                    $data_validade,
+                    $comprovacao,
+                    $modalidade,
+                    $carga_horaria,
+                    $curso_pago,
+                    $preco_unitario,
+                    $idEmpresa
+                );
+            }
 
-        if ($result) {
-            echo("<script>alert('Histórico de Treinamento Cadastrado com Sucesso!');</script>");
+            if ($result) {
+                echo("<script>alert('Histórico de Treinamento Cadastrado com Sucesso!');</script>");
+            } else {
+                echo("<script>alert('Erro ao Cadastrar Histórico de Treinamento');</script>");
+            }
         } else {
-            echo("<script>alert('Erro ao Cadastrar Histórico de Treinamento');</script>");
+            echo("<script>alert('Nenhum funcionário selecionado.');</script>");
         }
     }
     ?>
