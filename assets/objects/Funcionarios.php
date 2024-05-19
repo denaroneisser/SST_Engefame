@@ -206,3 +206,31 @@ Function setFuncionarioExcluir($F_CPF){
     }
     
 }
+
+
+//TESTEEEEEEEEEEEEEEE
+
+function searchFuncionarios($query) {
+    // Conecte-se ao banco de dados
+    $conn = getConnection();
+
+    // Proteja a consulta contra SQL injection
+    $query = "%" . $conn->real_escape_string($query) . "%";
+
+    // Prepare a consulta SQL
+    $sql = "SELECT CPF, Nome FROM Funcionarios WHERE Nome LIKE ? OR CPF LIKE ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $query, $query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $funcionarios = [];
+    while ($row = $result->fetch_assoc()) {
+        $funcionarios[] = $row;
+    }
+
+    $stmt->close();
+    $conn->close();
+
+    return $funcionarios;
+}
