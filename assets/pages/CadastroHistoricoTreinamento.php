@@ -9,7 +9,7 @@ require_once("../objects/Treinamentos.php");
 require_once("../objects/Empresas.php");
 ?>
 <link rel="stylesheet" href="../styles/CadastroFuncionario.css">
-<script src="../scripts/CadastroFuncionario.js"></script>
+<script src="../scripts/CadastroHistoricoTreinamento.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro Funcionarios</title>
@@ -68,7 +68,7 @@ require_once("../objects/Empresas.php");
             </div>
             <div class="form-group">
                 <label for="carga_horaria">Carga Horária</label>
-                <input type="hour" id="carga_horaria" name="carga_horaria" required>
+                <input type="time" id="carga_horaria" name="carga_horaria" required>
             </div>
             <div class="form-group">Valor do Treinamento por Pessoa</label>
             <label for="curso_pago">É pago?</label>
@@ -76,7 +76,7 @@ require_once("../objects/Empresas.php");
                     <option value="1">SIM</option>
                     <option value="0">Não</option>
                 </select>
-                <input type="number" id="preco_unitario" name="preco_unitario" required>
+                <input type="number" id="preco_unitario" name="preco_unitario" required placeholder="0.00">
             </div>
             <div class="form-group">
                 <label for="modalidade">Modalide</label>
