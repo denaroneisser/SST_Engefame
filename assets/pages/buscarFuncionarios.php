@@ -5,11 +5,11 @@ $query = $_GET['nome'];
 $funcionarios = GetFuncionarioByNome($query);
 if ($funcionarios) {
     // Construa a lista de funcionários encontrados
-    $output = "<div>";
     foreach ($funcionarios as $funcionario) {
-        $output .= "{$funcionario['Nome']}/{$funcionario['CPF']}";
+        $output = "<div class='funcionario-list' onclick='adicionarInformacao(".$funcionario['Nome'].",".$funcionario['CPF'].")'>";
+        $output .= "{$funcionario['Nome']} - {$funcionario['CPF']}";
+        $output .= "</div>";
     }
-    $output .= "</div>";
 
     // Retorne a lista de funcionários como resposta AJAX
     echo $output;

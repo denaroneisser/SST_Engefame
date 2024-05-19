@@ -11,7 +11,7 @@
         <form action="" method="POST">
             <label for="funcionario">Buscar Funcionário por Nome:</label>
             <input type="text" id="funcionario" name="funcionario" oninput="buscarFuncionarios(this.value)">
-            <div id="funcionario-list" class="funcionario-list"></div>
+            <div id="funcionario-lists" class="funcionario-lists"></div>
                 <div id="informacoes-selecionadas" class="informacoes-selecionadas"></div>
             <input type="submit" value="Adicionar">
         </form>
@@ -22,25 +22,25 @@
         function buscarFuncionarios(nome) {
             // Verifica se o campo de busca está vazio
             if (nome === '') {
-                document.getElementById('funcionario-list').innerHTML = '';
+                document.getElementById('funcionario-lists').innerHTML = '';
                 return;
             }
             // Faz uma requisição AJAX para buscar os funcionários
             const xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById('funcionario-list').innerHTML = this.responseText;
+                    document.getElementById('funcionario-lists').innerHTML = this.responseText;
                 }
             };
             xhttp.open("GET", `buscarFuncionarios.php?nome=${nome}`, true);
             xhttp.send();
         }
         function adicionarInformacao(cpf, nome) {
-            if (!informacoesSelecionadas.includes(id)) {
-                informacoesSelecionadas.push(id);
-                const container = document.getElementById('informacoes-selecionadas');
+            if (!informacoesSelecionadas.includes(cpf)) {
+                informacoesSelecionadas.push(cpf);
+                const container = document.getElementById('funcionario-lists');
                 const div = document.createElement('div');
-                div.className = 'informacao-selecionada';
+                div.className = 'funcionario-list';
                 div.textContent = nome;
 
                 const button = document.createElement('button');
