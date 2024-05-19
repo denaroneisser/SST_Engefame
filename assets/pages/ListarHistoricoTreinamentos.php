@@ -260,6 +260,7 @@ $conn->close();
                     <th>Modalidade</th>
                     <th>Precisa de Comprovação?</th>
                     <th>Valor por Pessoa</th>
+                    <th>Curso Pago?</th>
                 </tr>
             </thead>
             <tbody>
@@ -280,6 +281,7 @@ $conn->close();
                             <td><?php echo $HistoricoTreinamento['Modalidade'] == 1 ? 'Presencial' : 'Online'; ?></td>
                             <td><?php echo $HistoricoTreinamento['Comprovacao'] == 1 ? 'SIM' : 'NÃO'; ?></td>
                             <td><?php echo htmlspecialchars($HistoricoTreinamento['Preco_Unitario']); ?></td>
+                            <td><?php echo $HistoricoTreinamento['curso_pago'] == 1 ? 'SIM' : 'NÃO'; ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
