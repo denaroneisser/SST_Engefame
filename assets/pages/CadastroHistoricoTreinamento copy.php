@@ -40,12 +40,12 @@
                 informacoesSelecionadas.push(cpf);
                 const container = document.getElementById('funcionario-lists');
                 const div = document.createElement('div');
-                div.className = 'funcionario-list';
-                div.textContent = nome;
+                div.className = 'informacao-selecionada';
+                div.textContent = nome,cpf;
 
                 const button = document.createElement('button');
                 button.textContent = 'Remover';
-                button.onclick = () => removerInformacao(CPF, div);
+                button.onclick = () => removerInformacao(id, div);
 
                 div.appendChild(button);
                 container.appendChild(div);
