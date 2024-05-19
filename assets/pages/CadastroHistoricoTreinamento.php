@@ -18,7 +18,7 @@ require_once("../objects/Empresas.php");
 <body>
     <div class="container">
         <h2>Cadastro de Turmas do Treinamento</h2>
-        <form action="CadastroFuncionario.php" method="POST">
+        <form action="CadastroHistoricoTreinamento.php" method="POST">
             <div class="form-group">
                 <label for="idtreinamento">Nome do Treinamento</label>
                 <select id="idtreinamento" name="idtreinamento" required>
