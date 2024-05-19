@@ -36,8 +36,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="idEmpresa">Nome da Empresa Ministrante</label>
-                <select id="idEmpresa" name="idEmpresa" required>
+                <label for="idempresas">Nome da Empresa Ministrante</label>
+                <select id="idempresas" name="idempresas" required>
                     <option value="">Selecione</option>
                     <?php
                     $empresas = GetEmpresasALL();
@@ -158,7 +158,7 @@
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $idTreinamento = $_POST['idTreinamento'];
-        $idEmpresa = $_POST['idEmpresa'];
+        $idEmpresa = $_POST['idempresas'];
         $data_realizacao = $_POST['data_realizacao'];
         $data_validade = $_POST['data_validade'];
         $instrutor = $_POST['instrutor'];
