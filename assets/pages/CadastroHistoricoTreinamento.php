@@ -44,7 +44,7 @@ require_once("../objects/Empresas.php");
                         // Chame a função getCategorias para obter todas as categorias
                         $empresas = GetEmpresasALL();
                         // Verifique se há categorias e exiba-as
-                        if ($categorias) {
+                        if ($empresas) {
                             foreach ($empresas as $empresa) {
                                 echo "<option value='" . $empresa["idEmpresas"] . "'>" . $empresa["Nome"] . "</option>";;
                             }
