@@ -1,109 +1,106 @@
-<h2>LISTAR teste de RESULTADOS</h2>
-<br/>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Informações</title>
+    <style>
+        /* Estilos CSS */
+        .search-results {
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .search-result {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .search-result:hover {
+            background-color: #f0f0f0;
+        }
+        .informacoes-selecionadas {
+            margin-top: 10px;
+        }
+        .informacao-selecionada {
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+        .informacao-selecionada button {
+            margin-left: 5px;
+        }
+    </style>
+    <script>
+        // Array de informações disponíveis para seleção
+        const informacoes = [
+            { id: 1, nome: 'Informação 1' },
+            { id: 2, nome: 'Informação 2' },
+            { id: 3, nome: 'Informação 3' },
+            // Adicione mais informações conforme necessário
+        ];
 
-<?php
-include ("../objects/treinamentos.php");
+        // Array para armazenar as informações selecionadas
+        const informacoesSelecionadas = [];
 
-$resultado20= setTreinamento('NR10','Trabalho com Eletricidade','VALE SA.');
+        // Função para adicionar uma informação selecionada
+        function adicionarInformacao(id, nome) {
+            // Verifica se a informação já foi adicionada
+            if (!informacoesSelecionadas.includes(id)) {
+                // Adiciona a informação ao array de informações selecionadas
+                informacoesSelecionadas.push(id);
+                // Obtém o container onde as informações selecionadas serão exibidas
+                const container = document.getElementById('informacoes-selecionadas');
+                // Cria um elemento para exibir a informação selecionada
+                const div = document.createElement('div');
+                div.className = 'informacao-selecionada';
+                div.textContent = nome;
 
-if ($resultado20) {
-    echo '<br/>deu certo o setTreinamento';
-}else{
-    echo '<br/>NÂO deu certo o setTreinamento';
-}
-echo'<br/>';echo'<br/>';echo'<br/>';
-echo'<br/>-----------------------------------------------------------------------------------------<br/>';
+                // Cria um botão para remover a informação
+                const button = document.createElement('button');
+                button.textContent = 'Remover';
+                // Define o evento de clique do botão para chamar a função de remoção
+                button.onclick = () => removerInformacao(id, div);
 
-$resultado = GetTreinamentoById(1);
+                // Adiciona o botão ao elemento da informação selecionada
+                div.appendChild(button);
+                // Adiciona o elemento ao container
+                container.appendChild(div);
+            } else {
+                // Exibe um alerta se a informação já foi adicionada
+                alert('Essa informação já foi adicionada.');
+            }
+        }
 
-echo $resultado['Nome'];
-echo'<br/>';
-echo $resultado['idTreinamento'];
-echo'<br/>';
-echo $resultado['Descricao'];
-echo'<br/>';
-echo $resultado['Empresa_Fornecedora'];
-echo'<br/>';echo'<br/>';echo'<br/>';
-echo'<br/>-----------------------------------------------------------------------------------------<br/>';
+        // Função para remover uma informação selecionada
+        function removerInformacao(id, element) {
+            // Obtém o índice da informação no array de informações selecionadas
+            const index = informacoesSelecionadas.indexOf(id);
+            // Verifica se a informação está presente no array
+            if (index !== -1) {
+                // Remove a informação do array de informações selecionadas
+                informacoesSelecionadas.splice(index, 1);
+                // Remove o elemento do DOM
+                element.remove();
+            }
+        }
 
+        // Função para buscar informações com base na entrada do usuário
+        function buscarInformacoes() {
+            // Obtém a consulta de busca do campo de entrada
+            const searchQuery = document.getElementById('search').value.toLowerCase();
+            // Obtém o contêiner onde os resultados da busca serão exibidos
+            const resultsContainer = document.getElementById('search-results');
+            // Limpa o contêiner de resultados
+            resultsContainer.innerHTML = "";
 
-$resultados1 = GetTreinamentoByNome('NR12');
+            // Filtra as informações com base na consulta de busca
+            const filteredInformacoes = informacoes.filter(info =>
+                info.nome.toLowerCase().includes(searchQuery)
+            );
 
-if ($resultados1) {
-    foreach ($resultados1 as $resultado1) {
-        echo $resultado1['idTreinamento'];
-        echo $resultado1['Nome'];
-        echo $resultado1['Descricao'];
-        echo $resultado1['Empresa_Fornecedora'];
-        echo'<br/>';
-    }
-} else {
-    echo "Nenhum resultado encontrado para o nome 'NR'.";
-}
-echo'<br/>';echo'<br/>';echo'<br/>';
-echo'<br/>-----------------------------------------------------------------------------------------<br/>';
-
-$resultado2= setAlterarTreinamento(1,'NR12','O TRABALHO EU NAO LEMBRO','VALE SA.');
-
-if ($resultado2) {
-    echo '<br/>deu certo o setAlterarTreinamento';
-}else{
-    echo '<br/>NÂO deu certo o setAlterarTreinamento';
-}
-echo'<br/>';echo'<br/>';echo'<br/>';
-echo'<br/>-----------------------------------------------------------------------------------------<br/>';
-
-
-$resultados3 = GetTreinamentoByeEmpresa_Fornecedora('VALE');
-
-if ($resultados3) {
-    foreach ($resultados3 as $resultado3) {
-        echo $resultado3['Nome'];
-        echo'<br/>';
-        echo $resultado3['idTreinamento'];
-        echo'<br/>';
-        echo $resultado3['Descricao'];
-        echo'<br/>';
-        echo $resultado3['Empresa_Fornecedora'];
-        echo'<br/>';
-    }
-} else {
-    echo "Nenhum resultado encontrado para a Categoria 2.";
-}
-echo'<br/>';echo'<br/>';echo'<br/>';
-echo'<br/>-----------------------------------------------------------------------------------------<br/>';
-
-$resultados4 = GetTreinamentosALL();
-
-if ($resultados4) {
-    foreach ($resultados4 as $resultado4) {
-        echo $resultado4['Nome'];
-        echo'<br/>';
-        echo $resultado4['idTreinamento'];
-        echo'<br/>';
-        echo $resultado4['Descricao'];
-        echo'<br/>';
-        echo $resultado4['Empresa_Fornecedora'];
-        echo'<br/>';
-    }
-} else {
-    echo "Nenhum resultado encontrado.";
-}
-
-echo'<br/>';echo'<br/>';echo'<br/>';
-echo'<br/>-----------------------------------------------------------------------------------------<br/>';
-$resultado5= setTreinamentoExcluir(8);
-
-if($resultado5) {
-    echo '<br/>deu certo o setTreinamentoExcluir';
-}else{
-    echo '<br/>NÂO deu certo o setTreinamentoExcluir';
-}
-echo'<br/>';echo'<br/>';echo'<br/>';
-echo'<br/>-----------------------------------------------------------------------------------------<br/>';
-
-
-
-?>
-
-
+            // Verifica se há resultados
+            if (filteredInformacoes.length > 0) {
+                // Para cada informação filtrada, cria um elemento na lista de resultados
+                filteredInformacoes.forEach(info => {
+                    const div = document.createElement
