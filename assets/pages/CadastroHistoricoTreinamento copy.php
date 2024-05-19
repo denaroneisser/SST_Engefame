@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
 <?php
-//IMPORTANDO BIBLIOTECAS/DEPENDENCIAS
+// IMPORTANDO BIBLIOTECAS/DEPENDENCIAS
 require_once("../objects/Categorias.php");
 require_once("../objects/Funcionarios.php");
 require_once("../objects/Treinamentos.php");
@@ -19,15 +19,15 @@ function adicionarFuncionario() {
     const div = document.createElement('div');
     div.className = 'form-group';
     const select = document.createElement('select');
-    select.name = 'funcionarios[]'; // note the array notation
+    select.name = 'funcionarios[]'; // Note the array notation
     select.required = true;
-    
+
     // Option default
     const optionDefault = document.createElement('option');
     optionDefault.value = '';
     optionDefault.textContent = 'Selecione';
     select.appendChild(optionDefault);
-    
+
     <?php
     // Recuperar lista de funcionários
     $funcionarios = GetFuncionariosALL();
@@ -42,7 +42,7 @@ function adicionarFuncionario() {
         echo "alert('Erro ao obter Funcionários.');";
     }
     ?>
-    
+
     div.appendChild(select);
     container.appendChild(div);
 }
@@ -134,7 +134,7 @@ function adicionarFuncionario() {
             </div>
         </form>
     </div>
-    
+
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Processa os dados do formulário
