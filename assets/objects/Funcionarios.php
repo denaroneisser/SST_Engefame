@@ -213,6 +213,7 @@ Function setFuncionarioExcluir($F_CPF){
 function searchFuncionarios($query) {
     // Conecte-se ao banco de dados
     require "Conexao.php";
+
     // Proteja a consulta contra SQL injection
     $query = "%" . $pdo->real_escape_string($query) . "%";
 
