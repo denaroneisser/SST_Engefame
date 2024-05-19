@@ -17,8 +17,8 @@ Funções de GET/SET para a Tabela Historico_Treinamentos
             H_Comprovacao                        Tipo de Entrada (0 = Não Precisa Comprovar Presença; 1 = Precisa Comprovar Presença).
             H_Modalidade                         Tipo de Entrada (1 = Precencial; 0 = Online).
             H_CargaHoraria                       Horas de duração do Treinamento.
-            H_Pago                               Tipo de Entrada (1 = Se o Treinamento é Pago; 0 = Se o Treinamento não é Pago).
             H_Valor_Por_Pessoa                   Informar o valor do treinamento por pessoa.
+            H_Curso_Pago                         Tipo de Entrada (1 = SIM; 0 = NAO).
 @Tabela
 /*/
 //-----------------------------------------------------------------------
@@ -43,6 +43,7 @@ function setHistoricoTreinamento($H_Treinamentos_idTreinamento,$H_Funcionarios_C
      $setHistoricoTreinamentoStament->bindParam(8, $H_CargaHoraria);
      $setHistoricoTreinamentoStament->bindParam(9, $H_Pago);
      $setHistoricoTreinamentoStament->bindParam(10, $H_Valor_Por_Pessoa);
+     $setHistoricoTreinamentoStament->bindParam(11, $$H_Empresas_idEmpresa);
      $setHistoricoTreinamentoStament->bindParam(11, $$H_Empresas_idEmpresa);
     // EXECUTANDO O SQL
         try {

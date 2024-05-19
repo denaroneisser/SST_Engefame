@@ -87,6 +87,7 @@ $sql = "SELECT
     historico_treinamentos.Comprovacao,
     historico_treinamentos.Modalidade,
     historico_treinamentos.Instrutor,
+    historico_treinamentos.curso_pago,
     historico_treinamentos.Carga_Horaria,
     historico_treinamentos.Preco_Unitario
 FROM 
@@ -314,7 +315,7 @@ $conn->close();
     </div>
     <script>
     function abrirPopupIncluir() {
-        var url = "CadastroFuncionario.php";
+        var url = "CadastroHistoricoTreinamento.php";
         var largura = 600;
         var altura = 400;
         var esquerda = (screen.width - largura) / 2;
