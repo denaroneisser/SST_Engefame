@@ -30,7 +30,7 @@ function setHistoricoTreinamento($H_Treinamentos_idTreinamento,$H_Funcionarios_C
 //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O INSERT PARA INCLUIR HISTORICO TREINAMENTO
-    $setHistoricoTreinamentoSQL = "INSERT INTO Historico_Treinamentos (Treinamentos_idTreinamento,Funcionarios_CPF,Instrutor,Data_Realizacao,Data_Validade,Comprovacao,Modalidade,Carga_Horaria,curso_pago,Preco_Unitario,Empresas_idEmpresas) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    $setHistoricoTreinamentoSQL = "INSERT INTO Historico_Treinamentos (Treinamentos_idTreinamento,Funcionarios_CPF,Instrutor,Data_Realizacao,Data_Validade,Comprovacao,Modalidade,Carga_Horaria,curso_pago,Preco_Unitario,Empresas_idEmpresas,Funcionarios_Categorias_idCategoria) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
     $setHistoricoTreinamentoStament = $pdo->prepare($setHistoricoTreinamentoSQL); 
      // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
      $setHistoricoTreinamentoStament->bindParam(1, $H_Treinamentos_idTreinamento);
@@ -44,6 +44,7 @@ function setHistoricoTreinamento($H_Treinamentos_idTreinamento,$H_Funcionarios_C
      $setHistoricoTreinamentoStament->bindParam(9, $H_Pago);
      $setHistoricoTreinamentoStament->bindParam(10, $H_Valor_Por_Pessoa);
      $setHistoricoTreinamentoStament->bindParam(11, $$H_Empresas_idEmpresa);
+     $setHistoricoTreinamentoStament->bindParam(11, 1);
     // EXECUTANDO O SQL
         try {
             $setHistoricoTreinamentoStament->execute(); 
