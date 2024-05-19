@@ -7,7 +7,7 @@ if ($funcionarios) {
     // Construa a lista de funcionários encontrados
     $output = "<ul>";
     foreach ($funcionarios as $funcionario) {
-        $output .= "<li>{$funcionario['nome']}</li>";
+        $output .= "<li>{$funcionario['Nome']}</li>";
     }
     $output .= "</ul>";
 
