@@ -6,7 +6,7 @@
 require_once("../objects/Categorias.php");
 require_once("../objects/Funcionarios.php");
 require_once("../objects/Treinamentos.php");
-require_once("../objects/HistoricoTreinamentos.php");
+require_once("../objects/Historico_Treinamentos.php");
 require_once("../objects/Empresas.php");
 ?>
 <link rel="stylesheet" href="../styles/CadastroFuncionario.css">
