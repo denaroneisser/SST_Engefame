@@ -1,6 +1,6 @@
 <?php
 require_once("../objects/Funcionarios.php");
-if (isset($_POST['nome'])) {
+if (isset($_GET['nome'])) {
 $query = $_GET['nome'];
 $funcionarios = GetFuncionarioByNome($query);
 if ($funcionarios) {
