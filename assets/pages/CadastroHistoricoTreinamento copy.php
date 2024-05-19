@@ -21,6 +21,14 @@
         .informacoes-selecionadas {
             margin-top: 10px;
         }
+        .informacao-selecionada {
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+        .informacao-selecionada button {
+            margin-left: 5px;
+        }
     </style>
     <script>
         const informacoes = [
@@ -30,19 +38,33 @@
             // Adicione mais informações conforme necessário
         ];
 
+        const informacoesSelecionadas = [];
+
         function adicionarInformacao(id, nome) {
-            const container = document.getElementById('informacoes-selecionadas');
-            const div = document.createElement('div');
-            div.className = 'form-group';
-            div.textContent = nome;
+            if (!informacoesSelecionadas.includes(id)) {
+                informacoesSelecionadas.push(id);
+                const container = document.getElementById('informacoes-selecionadas');
+                const div = document.createElement('div');
+                div.className = 'informacao-selecionada';
+                div.textContent = nome;
 
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'informacoes[]';
-            input.value = id;
+                const button = document.createElement('button');
+                button.textContent = 'Remover';
+                button.onclick = () => removerInformacao(id, div);
 
-            div.appendChild(input);
-            container.appendChild(div);
+                div.appendChild(button);
+                container.appendChild(div);
+            } else {
+                alert('Essa informação já foi adicionada.');
+            }
+        }
+
+        function removerInformacao(id, element) {
+            const index = informacoesSelecionadas.indexOf(id);
+            if (index !== -1) {
+                informacoesSelecionadas.splice(index, 1);
+                element.remove();
+            }
         }
 
         function buscarInformacoes() {
@@ -85,17 +107,3 @@
     </div>
 </body>
 </html>
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $informacoes = $_POST['informacoes'] ?? [];
-
-    if (!empty($informacoes)) {
-        echo "Informações selecionadas:<br>";
-        foreach ($informacoes as $info) {
-            echo "ID: " . htmlspecialchars($info) . "<br>";
-        }
-    } else {
-        echo "Nenhuma informação selecionada.";
-    }
-}
-?>
