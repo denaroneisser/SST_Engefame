@@ -26,7 +26,7 @@ require_once("../objects/Empresas.php");
                         // Chame a função getCategorias para obter todas as categorias
                         $treinamentos = GetTreinamentosALL();
                         // Verifique se há categorias e exiba-as
-                        if ($categorias) {
+                        if ($treinamentos) {
                             foreach ($treinamentos as $treinamento) {
                                 echo "<option value='" . $treinamento["idTreinamento"] . "'>" . $treinamento["Nome"] . "</option>";;
                             }
