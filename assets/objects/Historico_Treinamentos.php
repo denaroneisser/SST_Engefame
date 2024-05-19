@@ -26,7 +26,7 @@ Funções de GET/SET para a Tabela Historico_Treinamentos
 
 
 //FUNÇÃO DE INCLUIR HISTORICO_TREINAMENTO NO BANCO DE DADOS 
-function setHistoricoTreinamento($H_Treinamentos_idTreinamento,$H_Funcionarios_CPF,$H_Instrutor,$H_Data_Realizacao,$H_Data_de_Validade,$H_Comprovacao,$H_Modalidade,$H_CargaHoraria,$H_Pago,$H_Valor_Por_Pessoa,$H_Empresas_idEmpresa){
+function setHistoricoTreinamento($H_Treinamentos_idTreinamento,$H_Funcionarios_CPF,$H_Instrutor,$H_Data_Realizacao,$H_Data_de_Validade,$H_Comprovacao,$H_Modalidade,$H_CargaHoraria,$H_Pago,$H_Valor_Por_Pessoa,$H_Empresas_idEmpresa,$H_Funcionarios_idCategoria){
 //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O INSERT PARA INCLUIR HISTORICO TREINAMENTO
@@ -43,8 +43,8 @@ function setHistoricoTreinamento($H_Treinamentos_idTreinamento,$H_Funcionarios_C
      $setHistoricoTreinamentoStament->bindParam(8, $H_CargaHoraria);
      $setHistoricoTreinamentoStament->bindParam(9, $H_Pago);
      $setHistoricoTreinamentoStament->bindParam(10, $H_Valor_Por_Pessoa);
-     $setHistoricoTreinamentoStament->bindParam(11, $$H_Empresas_idEmpresa);
-     $setHistoricoTreinamentoStament->bindParam(12, 1);
+     $setHistoricoTreinamentoStament->bindParam(11, $H_Empresas_idEmpresa);
+     $setHistoricoTreinamentoStament->bindParam(12, $H_Funcionarios_idCategoria);
     // EXECUTANDO O SQL
         try {
             $setHistoricoTreinamentoStament->execute(); 

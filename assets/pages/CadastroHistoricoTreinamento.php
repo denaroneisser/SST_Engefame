@@ -171,6 +171,8 @@
 
         if ($funcionarios) {
             foreach ($funcionarios as $cpf) {
+                $categoria =GetFuncionarioByCPF($cpf);
+                $Funcionario_Categoria = $categoria['Categorias_idCategoria'];
                 $result = setHistoricoTreinamento(
                     $idTreinamento,
                     $cpf,
@@ -182,7 +184,8 @@
                     $carga_horaria,
                     $curso_pago,
                     $preco_unitario,
-                    $idEmpresa
+                    $idEmpresa,
+                    $Funcionario_Categoria
                 );
             }
         }
