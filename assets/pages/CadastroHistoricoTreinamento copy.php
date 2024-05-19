@@ -3,107 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adicionar Informações</title>
-    <style>
-        /* Estilos CSS */
-        .search-results {
-            border: 1px solid #ccc;
-            max-height: 200px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-        }
-        .search-result {
-            padding: 10px;
-            cursor: pointer;
-        }
-        .search-result:hover {
-            background-color: #f0f0f0;
-        }
-        .informacoes-selecionadas {
-            margin-top: 10px;
-        }
-        .informacao-selecionada {
-            margin-bottom: 5px;
-            border: 1px solid #ccc;
-            padding: 5px;
-        }
-        .informacao-selecionada button {
-            margin-left: 5px;
-        }
-    </style>
+    <title>Adicionar Funcionários</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Adicionar Funcionários</h2>
+        <form action="" method="POST">
+            <label for="funcionario">Buscar Funcionário por Nome:</label>
+            <input type="text" id="funcionario" name="funcionario" oninput="buscarFuncionarios(this.value)">
+            <div id="funcionario-list"></div>
+            <input type="submit" value="Adicionar">
+        </form>
+    </div>
+
     <script>
-        // Array de informações disponíveis para seleção
-        const informacoes = [
-            { id: 1, nome: 'Informação 1' },
-            { id: 2, nome: 'Informação 2' },
-            { id: 3, nome: 'Informação 3' },
-            // Adicione mais informações conforme necessário
-        ];
-
-        // Array para armazenar as informações selecionadas
-        const informacoesSelecionadas = [];
-
-        // Função para adicionar uma informação selecionada
-        function adicionarInformacao(id, nome) {
-            // Verifica se a informação já foi adicionada
-            if (!informacoesSelecionadas.includes(id)) {
-                // Adiciona a informação ao array de informações selecionadas
-                informacoesSelecionadas.push(id);
-                // Obtém o container onde as informações selecionadas serão exibidas
-                const container = document.getElementById('informacoes-selecionadas');
-                // Cria um elemento para exibir a informação selecionada
-                const div = document.createElement('div');
-                div.className = 'informacao-selecionada';
-                div.textContent = nome;
-
-                // Cria um botão para remover a informação
-                const button = document.createElement('button');
-                button.textContent = 'Remover';
-                // Define o evento de clique do botão para chamar a função de remoção
-                button.onclick = () => removerInformacao(id, div);
-
-                // Adiciona o botão ao elemento da informação selecionada
-                div.appendChild(button);
-                // Adiciona o elemento ao container
-                container.appendChild(div);
-            } else {
-                // Exibe um alerta se a informação já foi adicionada
-                alert('Essa informação já foi adicionada.');
-            }
-        }
-
-        // Função para remover uma informação selecionada
-        function removerInformacao(id, element) {
-            // Obtém o índice da informação no array de informações selecionadas
-            const index = informacoesSelecionadas.indexOf(id);
-            // Verifica se a informação está presente no array
-            if (index !== -1) {
-                // Remove a informação do array de informações selecionadas
-                informacoesSelecionadas.splice(index, 1);
-                // Remove o elemento do DOM
-                element.remove();
-            }
-        }
-
-        // Função para buscar informações com base na entrada do usuário
-        function buscarInformacoes(nome) {
+        // Função para buscar funcionários por nome
+        function buscarFuncionarios(nome) {
             // Verifica se o campo de busca está vazio
             if (nome === '') {
-                document.getElementById('search').innerHTML = '';
+                document.getElementById('funcionario-list').innerHTML = '';
                 return;
             }
             // Faz uma requisição AJAX para buscar os funcionários
             const xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById('search').innerHTML = this.responseText;
+                    document.getElementById('funcionario-list').innerHTML = this.responseText;
                 }
             };
             xhttp.open("GET", `buscarFuncionarios.php?nome=${nome}`, true);
             xhttp.send();
         }
-            // Verifica se há resultados
-            if (filteredInformacoes.length > 0) {
-                // Para cada informação filtrada, cria um elemento na lista de resultados
-                filteredInformacoes.forEach(info => {
-                    const div = document.createElement
+    </script>
+</body>
+</html>
