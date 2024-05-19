@@ -38,19 +38,19 @@ function setEmpresa($E_Nome){
 
 
 
-//FUNÇÃO DE ALTERAR CATEGORIA NO BANCO DE DADOS
-function setCategoriaAlterar($C_Nome,$C_idCategoria){
+//FUNÇÃO DE ALTERAR EMPRESA NO BANCO DE DADOS
+function setEmpresaAlterar($E_Nome,$E_idEmpresa){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
         require "Conexao.php";
-                // CRIANDO O INSERT PARA INCLUIR CATEGORIA
-                $setAlterarCategoriaSQL = "UPDATE Categorias SET Nome=? WHERE idCategoria= ?";
-                $setAlterarCategoriaStament = $pdo->prepare($setAlterarCategoriaSQL); 
-                // SUBSTITUINDO O VALOR :F_Nome,F_CPF,F_Situacao,F_Categoria DO SQL PELA VARIAVEL
-                $setAlterarCategoriaStament->bindValue(1, $C_Nome,PDO::PARAM_STR); 
-                $setAlterarCategoriaStament->bindValue(2, $C_idCategoria,PDO::PARAM_STR); 
+                // CRIANDO O INSERT PARA ALTERAR EMPRESA
+                $setAlterarEmpresaSQL = "UPDATE Empresas SET Nome=? WHERE idEmpresas= ?";
+                $setAlterarEmpresaStament = $pdo->prepare($setAlterarEmpresaSQL); 
+                // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
+                $setAlterarEmpresaStament->bindValue(1, $E_Nome,PDO::PARAM_STR); 
+                $setAlterarEmpresaStament->bindValue(2, $E_idEmpresa,PDO::PARAM_STR); 
                 // EXECUTANDO O SQL
                 try {
-                    $setAlterarCategoriaStament->execute(); 
+                    $setAlterarEmpresaStament->execute(); 
                     return true;
     
                 }catch (PDOException $e) {
@@ -61,22 +61,22 @@ function setCategoriaAlterar($C_Nome,$C_idCategoria){
 
 
 
-//FUNÇÃO DE BUSCAR CATEGORIA NO BANCO DE DADOS POR ID
-Function GetCategoriaById($C_idCategoria){
+//FUNÇÃO DE BUSCAR EMPRESA NO BANCO DE DADOS POR ID
+Function GetEmpresaById($E_idEmpresa){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
-    // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
-    $GetCategoriaSQL_Exists = "SELECT * FROM Categorias WHERE idCategoria = ?";
-    $GetCategoriaStament = $pdo->prepare($GetCategoriaSQL_Exists); 
+    // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA NO SISTEMA
+    $GetEmpresaByIdSQL = "SELECT * FROM Empresas WHERE idEmpresas = ?";
+    $GetEmpresaByIdStament = $pdo->prepare($GetEmpresaByIdSQL); 
     // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
-    $GetCategoriaStament->bindValue(1,$C_idCategoria);
+    $GetEmpresaByIdStament->bindValue(1,$E_idEmpresa);
     // EXECUTANDO O SQL UTILIAZANDO UM TRY
     try {
       //SQL EXECUTADA
-      $GetCategoriaStament->execute(); 
+      $GetEmpresaByIdStament->execute(); 
       //TRANSFORMANDO SQL EXECUTADA EM UM OBJETO ARRAY
-      $GetCategoriaObject = $GetCategoriaStament->fetch(PDO::FETCH_ASSOC);
-     return $GetCategoriaObject;
+      $GetEmpresaByIdObject = $GetEmpresaByIdStament->fetch(PDO::FETCH_ASSOC);
+     return $GGetEmpresaByIdObject;
 
      }catch (PDOException $e) {
       echo "Erro PDO: " . $e->getMessage();
@@ -84,22 +84,22 @@ Function GetCategoriaById($C_idCategoria){
 }
 
 
-//FUNÇÃO DE BUSCAR CATEGORIA NO BANCO DE DADOS POR NOME
-Function GetCategoriaByNome($C_Nome){
+//FUNÇÃO DE BUSCAR EMPRESA NO BANCO DE DADOS POR NOME
+Function GetEmpresaByNome($E_Nome){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
-    $GetCategoriaSQL_Exists = "SELECT * FROM Categorias WHERE Nome LIKE ?";
-    $GetCategoriaStament = $pdo->prepare($GetCategoriaSQL_Exists); 
+    $GetEmpresaByNomeSQL_Exists = "SELECT * FROM Empresas WHERE Nome LIKE ?";
+    $GetEmpresaByNomeStament = $pdo->prepare($GetEmpresaByNomeSQL_Exists); 
     // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
-    $GetCategoriaStament->bindValue(1,'%'. $C_Nome.'%', PDO::PARAM_STR);
+    $GetEmpresaByNomeStament->bindValue(1,'%'. $E_Nome.'%', PDO::PARAM_STR);
     // EXECUTANDO O SQL UTILIZANDO UM TRY
     try {
       //SQL EXECUTADA
-      $GetCategoriaStament->execute(); 
+      $GetEmpresaByNomeStament->execute(); 
       //TRANSFORMANDO SQL EXECUTADA EM UM OBJETO ARRAY
-      $GetCategoriaObject = $GetCategoriaStament->fetchALL(PDO::FETCH_ASSOC);
-     return $GetCategoriaObject;
+      $GetEmpresaByNomeObject = $GetEmpresaByNomeStament->fetchALL(PDO::FETCH_ASSOC);
+     return $GetEmpresaByNomeObject;
 
      }catch (PDOException $e) {
       echo "Erro PDO: " . $e->getMessage();
@@ -127,18 +127,18 @@ Function GetEmpresasALL(){
 }
 
 
-//FUNÇÃO DE DELETAR CATEGORIA NO BANCO DE DADOS POR ID
-Function setCategoriaExcluir($C_idCategoria){
+//FUNÇÃO DE DELETAR EMPRESA NO BANCO DE DADOS POR ID
+Function setEmpresaExcluir($E_idEmpresa){
     require "Conexao.php";
-    // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
-    $setCateogiraExcluirSQL = "DELETE FROM Categorias WHERE idCategoria= ? ";
-    $setCateogiraExcluirStament = $pdo->prepare($setCateogiraExcluirSQL); 
+    // CRIANDO O SELECT PARA EXCLUIR EXISTENCIA DO NOME NO SISTEMA
+    $setEmpresaExcluirSQL = "DELETE FROM Empresas WHERE idEmpresas= ? ";
+    $setEmpresaExcluirStament = $pdo->prepare($setEmpresaExcluirSQL); 
     // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
-    $setCateogiraExcluirStament->bindValue(1, $C_idCategoria, PDO::PARAM_STR);
+    $setEmpresaExcluirStament->bindValue(1, $E_idEmpresa, PDO::PARAM_INT);
     // EXECUTANDO O SQL UTILIAZANDO UM TRY
     try {
       //SQL EXECUTADA
-      $setCateogiraExcluirStament->execute(); 
+      $setEmpresaExcluirStament->execute(); 
       return true;
 
      }catch (PDOException $e) {
