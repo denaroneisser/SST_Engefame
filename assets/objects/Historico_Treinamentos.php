@@ -44,7 +44,7 @@ function setHistoricoTreinamento($H_Treinamentos_idTreinamento,$H_Funcionarios_C
      $setHistoricoTreinamentoStament->bindParam(9, $H_Pago);
      $setHistoricoTreinamentoStament->bindParam(10, $H_Valor_Por_Pessoa);
      $setHistoricoTreinamentoStament->bindParam(11, $$H_Empresas_idEmpresa);
-     $setHistoricoTreinamentoStament->bindParam(11, 1);
+     $setHistoricoTreinamentoStament->bindParam(12, 1);
     // EXECUTANDO O SQL
         try {
             $setHistoricoTreinamentoStament->execute(); 
