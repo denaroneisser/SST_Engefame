@@ -6,6 +6,7 @@
 require_once("../objects/Categorias.php");
 require_once("../objects/Funcionarios.php");
 require_once("../objects/Treinamentos.php");
+require_once("../objects/HistoricoTreinamentos.php");
 require_once("../objects/Empresas.php");
 ?>
 <link rel="stylesheet" href="../styles/CadastroFuncionario.css">
@@ -93,21 +94,84 @@ require_once("../objects/Empresas.php");
                 </select>
             </div>
             <div class="form-group">
-                <button type="submit" onclick="VerificaCPF(event)">Cadastrar</button>
+                <label for="comprovacao">Funcionarios Participantes</label>
+            <input type="text" id="funcionario" name="funcionario" oninput="buscarFuncionarios(this.value)">
+            <div id="funcionario-lists" class="funcionario-lists"></div>
+            <div id="informacoes-selecionadas" class="informacoes-selecionadas"></div>
+            </div>
+            <div cform-group">
+                <button type="submit" >Cadastrar</button>
             </div>
         </form>
     </div>
-    
+
+
+
+
+
+    <script>
+        //=============================================================================================
+        // Array para armazenar as informações selecionadas
+        const informacoesSelecionadas = [];
+
+        // Função para buscar funcionários por nome
+        function buscarFuncionarios(nome) {
+            // Verifica se o campo de busca está vazio
+            if (nome === '') {
+                document.getElementById('funcionario-lists').innerHTML = '';
+                return;
+            }
+            // Faz uma requisição AJAX para buscar os funcionários
+            const xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('funcionario-lists').innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("GET", `buscarFuncionarios.php?nome=${nome}`, true);
+            xhttp.send();
+        }
+
+        // Função para adicionar uma informação selecionada
+        function adicionarInformacao(cpf, nome) {
+            // Verifica se a informação já foi adicionada
+            if (!informacoesSelecionadas.includes(cpf)) {
+                informacoesSelecionadas.push(cpf);
+                const container = document.getElementById('informacoes-selecionadas');
+                const div = document.createElement('div');
+                div.className = 'informacao-selecionada';
+                div.textContent = `${nome} - ${cpf}`;
+
+                const button = document.createElement('button');
+                button.textContent = 'Remover';
+                button.onclick = () => removerInformacao(cpf, div);
+
+                div.appendChild(button);
+                container.appendChild(div);
+            } else {
+                alert('Esta informação já foi adicionada.');
+            }
+        }
+
+        // Função para remover uma informação selecionada
+        function removerInformacao(cpf, element) {
+            const index = informacoesSelecionadas.indexOf(cpf);
+            if (index !== -1) {
+                informacoesSelecionadas.splice(index, 1);
+                element.remove();
+            }
+        }
+    </script>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $resultado = setFuncionario($_POST['nome'],$_POST['cpf'],$_POST['situacao'],$_POST['categoria']);
-            if($resultado==true){
-                echo("<script>alert('Usuário Cadastrado com Sucesso!');</script>");
-                echo("<script>window.close();</script>");
-            }else{
-                echo("<script>alert('CPF Já Existente na Base de Dados');</script>");
-                echo($resultado);
-            }
+        $i = "<script>informacoesSelecionadas.length</script>";
+        $array = "<script>informacoesSelecionadas[]</script";
+        //for($j=0;$j<=$i,$j++;){
+            //include_once ( "../objects/HistoricoTreinamentos.php");
+            $resulta = setHistoricoTreinamento($_POST['idTreinamento'],$array['cpf'],$_POST['instrutor'],$_POST['data_realizacao'],$_POST['data_validade'],$_POST['comprovacao'],$_POST['modalidade'],$_POST['carga_horaria'],$_POST['curso_pago'],$_POST['valor_por_pessoa'],$_POST['idEmpresas']);
+
+        //}
+        
  
         } else {
             }
