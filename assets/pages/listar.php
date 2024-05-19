@@ -104,3 +104,21 @@
                 // Para cada informação filtrada, cria um elemento na lista de resultados
                 filteredInformacoes.forEach(info => {
                     const div = document.createElement
+                    </head>
+<body>
+    <div class="container">
+        <h2>Adicionar Informações</h2>
+        <form action="processarInformacoes.php" method="POST">
+            <div class="form-group">
+                <label for="search">Buscar Informações</label>
+                <input type="text" id="search" onkeyup="buscarInformacoes()" placeholder="Pesquisar...">
+                <div id="search-results" class="search-results"></div>
+                <div id="informacoes-selecionadas" class="informacoes-selecionadas"></div>
+            </div>
+            <div class="form-group">
+                <button type="submit">Enviar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
