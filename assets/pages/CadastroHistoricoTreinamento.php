@@ -36,8 +36,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="idempresas">Nome da Empresa Ministrante</label>
-                <select id="idempresas" name="idempresas" required>
+                <label for="idEmpresa">Nome da Empresa Ministrante</label>
+                <select id="idEmpresa" name="idEmpresa" required>
                     <option value="">Selecione</option>
                     <?php
                     $empresas = GetEmpresasALL();
@@ -77,7 +77,7 @@
                 <input type="number" id="preco_unitario" name="preco_unitario" required placeholder="0.00">
             </div>
             <div class="form-group">
-                <label for="modalidade">Modalide</label>
+                <label for="modalidade">Modalidade</label>
                 <select id="modalidade" name="modalidade" required>
                     <option value="1">Presencial</option>
                     <option value="0">Online</option>
@@ -158,7 +158,7 @@
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $idTreinamento = $_POST['idTreinamento'];
-        $idEmpresa = $_POST['idempresas'];
+        $idEmpresa = $_POST['idEmpresa'];
         $data_realizacao = $_POST['data_realizacao'];
         $data_validade = $_POST['data_validade'];
         $instrutor = $_POST['instrutor'];
@@ -185,16 +185,11 @@
                     $idEmpresa
                 );
             }
-
-            if ($result) {
+        }
+        if ($result) {
                 echo("<script>alert('Histórico de Treinamento Cadastrado com Sucesso!');</script>");
             } else {
-                echo("<script>alert('Erro ao Cadastrar Histórico de Treinamento');</script>");
+                echo("<script>alert('ERRO!');</script>");
             }
-        } else {
-            echo("<script>alert('Nenhum funcionário selecionado.');</script>");
-        }
-    }
-    ?>
-</body>
-</html>
+}
+?>
