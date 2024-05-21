@@ -54,6 +54,12 @@ require_once("../objects/Acompanhamento_Turmas.php");
                 unset($_POST['idempresa']);
             }
         }
+        if(isset($_POST['idTurma'])){
+            if(setTurmasExcluir($_POST['idTurma'])){
+                echo "<div class='alert alert-success' role='alert'>Turma apagada!</div>";
+                unset($_POST['idTurma']);
+            }
+        }
 
 
     }else{

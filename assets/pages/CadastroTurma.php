@@ -3,7 +3,6 @@
 <head>
     <?php
     // IMPORTANDO BIBLIOTECAS/DEPENDENCIAS
-    require_once("../objects/Categorias.php");
     require_once("../objects/Treinamentos.php");
     require_once("../objects/Turmas.php");
     require_once("../objects/Empresas.php");
@@ -106,7 +105,6 @@
         $preco_unitario = $_POST['preco_unitario'];
         $modalidade = $_POST['modalidade'];
         $comprovacao = $_POST['comprovacao'];
-        echo 'A EMPRESA:'.$_POST['idEmpresa'];
         if ($result=SetTurmas($idEmpresa,$idTreinamento,$instrutor,$data_realizacao,$data_validade,$comprovacao,$modalidade,$carga_horaria,$preco_unitario,$curso_pago)) {
                 echo("<script>alert('Turma Cadastrada com Sucesso!');</script>");
             } else {

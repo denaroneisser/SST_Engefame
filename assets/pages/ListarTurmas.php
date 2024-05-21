@@ -325,7 +325,7 @@ $conn->close();
                 // Cria um campo de input para o idHistoricoTreinamento
                 var input = document.createElement('input');
                 input.type = 'hidden';
-                input.name = 'idHistoricoTreinamento';
+                input.name = 'idTurma';
                 input.value = idHistoricoTreinamento;
 
                 form.appendChild(input);
