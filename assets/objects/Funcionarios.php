@@ -18,7 +18,7 @@ Funções de GET/SET para a Tabela Funcionários
 
 
 //FUNÇÃO DE INCLUIR FUNCIONÁRIO NO BANCO DE DADOS
-function setFuncionario($F_Nome,$F_CPF,$F_Situacao,$F_Categoria){
+function setFuncionarios($F_Nome,$F_CPF,$F_Situacao,$F_Categoria){
 //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADAOS
     require "Conexao.php";
 
@@ -70,7 +70,7 @@ function setFuncionario($F_Nome,$F_CPF,$F_Situacao,$F_Categoria){
 
 
 //FUNÇÃO DE BUSCAR FUNCIONÁRIO NO BANCO DE DADOS POR NOME
-function GetFuncionarioByNome($F_Nome){
+function GetFuncionariosByNome($F_Nome){
     require "../objects/Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
     $GetFuncionarioSQL_Exists = "SELECT Nome,CPF,Situacao,Categorias_idCategoria FROM funcionarios WHERE funcionarios.Nome LIKE ?";
@@ -93,7 +93,7 @@ function GetFuncionarioByNome($F_Nome){
 
 
 //FUNÇÃO DE BUSCAR FUNCIONÁRIO NO BANCO DE DADOS POR NOME
-Function GetFuncionarioByCPF($F_CPF){
+Function GetFuncionariosByCPF($F_CPF){
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
     $GetFuncionarioSQL_Exists = "SELECT * FROM funcionarios WHERE cpf= ? ";
@@ -117,7 +117,7 @@ Function GetFuncionarioByCPF($F_CPF){
 
 
 //FUNÇÃO DE ALTERAR FUNCIONÁRIO NO BANCO DE DADOS
-function setFuncionarioAlterar($F_Nome,$F_CPF,$F_Situacao,$F_Categoria){
+function setFuncionariosAlterar($F_Nome,$F_CPF,$F_Situacao,$F_Categoria){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADAOS
         require "Conexao.php";
                 // CRIANDO O INSERT PARA INCLUIR FUNCIONARIO
@@ -142,7 +142,7 @@ function setFuncionarioAlterar($F_Nome,$F_CPF,$F_Situacao,$F_Categoria){
 
 
 //FUNÇÃO DE BUSCAR FUNCIONÁRIO NO BANCO DE DADOS POR CATEGORIA
-Function GetFuncionarioByCategorias_idCategoria($F_Categoria){
+Function GetFuncionariosByCategorias_idCategoria($F_Categoria){
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
     $GetFuncionarioByCategorias_idCategoria_SQL = "SELECT * FROM funcionarios WHERE Categorias_idCategoria= ? ";
@@ -188,7 +188,7 @@ Function GetFuncionariosALL(){
 
 
 //FUNÇÃO DE DELETAR FUNCIONÁRIO NO BANCO DE DADOS POR CPF
-Function setFuncionarioExcluir($F_CPF){
+Function setFuncionariosExcluir($F_CPF){
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
     $SetFuncionarioExcluirSQL = "DELETE FROM funcionarios WHERE cpf= ? ";
@@ -205,32 +205,4 @@ Function setFuncionarioExcluir($F_CPF){
       echo "Erro PDO: " . $e->getMessage();
     }
     
-}
-
-
-//TESTEEEEEEEEEEEEEEE
-
-function searchFuncionarios($query) {
-    // Conecte-se ao banco de dados
-    require "Conexao.php";
-
-    // Proteja a consulta contra SQL injection
-    $query = "%" . $pdo->real_escape_string($query) . "%";
-
-    // Prepare a consulta SQL
-    $sql = "SELECT CPF, Nome FROM Funcionarios WHERE Nome LIKE ? OR CPF LIKE ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bind_param("ss", $query, $query);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $funcionarios = [];
-    while ($row = $result->fetch_assoc()) {
-        $funcionarios[] = $row;
-    }
-
-    $stmt->close();
-    $conn->close();
-
-    return $funcionarios;
 }

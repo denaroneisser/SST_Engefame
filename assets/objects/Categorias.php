@@ -1,6 +1,6 @@
 <?php
 //-----------------------------------------------------------------------
-/*/{} Funcionarios.php
+/*/{} Categorias.php
 Funções de GET/SET para a Tabela Categoria
 
 @author Vinicius Neisser
@@ -16,7 +16,7 @@ Funções de GET/SET para a Tabela Categoria
 
 
 //FUNÇÃO DE INCLUIR CATEGORIA NO BANCO DE DADOS
-function setCategoria($C_Nome){
+function setCategorias($C_Nome){
 //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O INSERT PARA INCLUIR CATEGORIA
@@ -39,7 +39,7 @@ function setCategoria($C_Nome){
 
 
 //FUNÇÃO DE ALTERAR CATEGORIA NO BANCO DE DADOS
-function setCategoriaAlterar($C_Nome,$C_idCategoria){
+function setCategoriasAlterar($C_Nome,$C_idCategoria){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
         require "Conexao.php";
                 // CRIANDO O INSERT PARA INCLUIR CATEGORIA
@@ -62,7 +62,7 @@ function setCategoriaAlterar($C_Nome,$C_idCategoria){
 
 
 //FUNÇÃO DE BUSCAR CATEGORIA NO BANCO DE DADOS POR ID
-Function GetCategoriaById($C_idCategoria){
+Function GetCategoriasById($C_idCategoria){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
@@ -85,7 +85,7 @@ Function GetCategoriaById($C_idCategoria){
 
 
 //FUNÇÃO DE BUSCAR CATEGORIA NO BANCO DE DADOS POR NOME
-Function GetCategoriaByNome($C_Nome){
+Function GetCategoriasByNome($C_Nome){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
@@ -128,7 +128,7 @@ Function GetCategoriasALL(){
 
 
 //FUNÇÃO DE DELETAR CATEGORIA NO BANCO DE DADOS POR ID
-Function setCategoriaExcluir($C_idCategoria){
+Function setCategoriasExcluir($C_idCategoria){
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
     $setCateogiraExcluirSQL = "DELETE FROM Categorias WHERE idCategoria= ? ";

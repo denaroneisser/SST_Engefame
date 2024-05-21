@@ -1,6 +1,6 @@
 <?php
 //-----------------------------------------------------------------------
-/*/{} Funcionarios.php
+/*/{} Treinamentos.php
 Funções de GET/SET para a Tabela Treinamentos
 
 @author Vinicius Neisser
@@ -17,7 +17,7 @@ Funções de GET/SET para a Tabela Treinamentos
 
 
 //FUNÇÃO DE INCLUIR TREINAMENTO NO BANCO DE DADOS
-function setTreinamento($T_Nome,$T_Descricao){
+function setTreinamentos($T_Nome,$T_Descricao){
 //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O INSERT PARA INCLUIR CATEGORIA
@@ -41,7 +41,7 @@ function setTreinamento($T_Nome,$T_Descricao){
 
 
 //FUNÇÃO DE ALTERAR TREINAMENTO NO BANCO DE DADOS
-function setTreinamentoAlterar($T_idCategoria,$T_Nome,$T_Descricao){
+function setTreinamentosAlterar($T_idCategoria,$T_Nome,$T_Descricao){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
         require "Conexao.php";
                 // CRIANDO O INSERT PARA INCLUIR CATEGORIA
@@ -65,7 +65,7 @@ function setTreinamentoAlterar($T_idCategoria,$T_Nome,$T_Descricao){
 
 
 //FUNÇÃO DE BUSCAR TREIMANETO NO BANCO DE DADOS POR ID
-Function GetTreinamentoById($T_idTreinamento){
+Function GetTreinamentosById($T_idTreinamento){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
@@ -89,7 +89,7 @@ Function GetTreinamentoById($T_idTreinamento){
 
 
 //FUNÇÃO DE BUSCAR TREINAMENTO NO BANCO DE DADOS POR NOME
-Function GetTreinamentoByNome($T_Nome){
+Function GetTreinamentosByNome($T_Nome){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
@@ -135,7 +135,7 @@ Function GetTreinamentosALL(){
 
 
 //FUNÇÃO DE DELETAR TREINAMENTO NO BANCO DE DADOS POR ID
-Function setTreinamentoExcluir($T_idTreinamento){
+Function setTreinamentosExcluir($T_idTreinamento){
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
     $setTreinamentoExcluirSQL = "DELETE FROM Treinamentos WHERE idTreinamento= ? ";
@@ -156,7 +156,7 @@ Function setTreinamentoExcluir($T_idTreinamento){
 
 
 //FUNÇÃO DE BUSCAR TREINAMENTO NO BANCO DE DADOS POR EMPRESA_FORNECEDORA
-Function GetTreinamentoByeEmpresa_Fornecedora($T_Empresa_Fornecedora){
+Function GetTreinamentosByeEmpresa_Fornecedora($T_Empresa_Fornecedora){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA

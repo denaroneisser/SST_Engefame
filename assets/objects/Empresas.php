@@ -1,6 +1,6 @@
 <?php
 //-----------------------------------------------------------------------
-/*/{} Funcionarios.php
+/*/{} Empresas.php
 Funções de GET/SET para a Tabela Empresas
 
 @author Vinicius Neisser
@@ -16,7 +16,7 @@ Funções de GET/SET para a Tabela Empresas
 
 
 //FUNÇÃO DE INCLUIR EMPRESA NO BANCO DE DADOS
-function setEmpresa($E_Nome){
+function setEmpresas($E_Nome){
 //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O INSERT PARA INCLUIR EMPRESA
@@ -39,7 +39,7 @@ function setEmpresa($E_Nome){
 
 
 //FUNÇÃO DE ALTERAR EMPRESA NO BANCO DE DADOS
-function setEmpresaAlterar($E_Nome,$E_idEmpresa){
+function setEmpresasAlterar($E_Nome,$E_idEmpresa){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
         require "Conexao.php";
                 // CRIANDO O INSERT PARA ALTERAR EMPRESA
@@ -62,7 +62,7 @@ function setEmpresaAlterar($E_Nome,$E_idEmpresa){
 
 
 //FUNÇÃO DE BUSCAR EMPRESA NO BANCO DE DADOS POR ID
-Function GetEmpresaById($E_idEmpresa){
+Function GetEmpresasById($E_idEmpresa){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA NO SISTEMA
@@ -85,7 +85,7 @@ Function GetEmpresaById($E_idEmpresa){
 
 
 //FUNÇÃO DE BUSCAR EMPRESA NO BANCO DE DADOS POR NOME
-Function GetEmpresaByNome($E_Nome){
+Function GetEmpresasByNome($E_Nome){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA DO NOME NO SISTEMA
@@ -128,7 +128,7 @@ Function GetEmpresasALL(){
 
 
 //FUNÇÃO DE DELETAR EMPRESA NO BANCO DE DADOS POR ID
-Function setEmpresaExcluir($E_idEmpresa){
+Function setEmpresasExcluir($E_idEmpresa){
     require "Conexao.php";
     // CRIANDO O SELECT PARA EXCLUIR EXISTENCIA DO NOME NO SISTEMA
     $setEmpresaExcluirSQL = "DELETE FROM Empresas WHERE idEmpresas= ? ";
