@@ -57,7 +57,7 @@ require_once("../objects/Funcionarios.php");
     
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $resultado = setFuncionario($_POST['nome'],$_POST['cpf'],$_POST['situacao'],$_POST['categoria']);
+        $resultado = setFuncionarios($_POST['nome'],$_POST['cpf'],$_POST['situacao'],$_POST['categoria']);
             if($resultado==true){
                 echo("<script>alert('Usuário Cadastrado com Sucesso!');</script>");
                 echo("<script>window.close();</script>");

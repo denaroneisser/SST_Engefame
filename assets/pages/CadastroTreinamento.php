@@ -19,8 +19,12 @@ require_once("../objects/Treinamentos.php");
                 <input type="text" id="nome" name="nome" required maxlength="45">
             </div>
             <div class="form-group">
+                <label for="nome">Subtitulo</label>
+                <textarea id="subtitulo" name="subtitulo" required  rows="2" cols="40" maxlength="100"></textarea>
+            </div>
+            <div class="form-group">
                 <label for="nome">Descrição</label>
-                <textarea id="Descricao" name="descricao" required  rows="4" cols="40" maxlength="200"></textarea>
+                <textarea id="descricao" name="descricao" required  rows="4" cols="40" maxlength="200"></textarea>
             </div>
             <div class="form-group">
                 <button type="submit">Cadastrar</button>
@@ -29,9 +33,9 @@ require_once("../objects/Treinamentos.php");
     </div>
     
 <?php
-require_once("../objects/categorias.php");
+require_once("../objects/Treinamentos.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-$resultado = setTreinamento($_POST['nome'],$_POST['descricao']);
+$resultado = setTreinamentos($_POST['nome'],$_POST['subtitulo'],$_POST['descricao']);
  if($resultado== true){
     echo("<script>alert('Treinamento Cadastrado!');</script>");
  

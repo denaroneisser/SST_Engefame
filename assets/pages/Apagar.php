@@ -6,6 +6,7 @@
 require_once("../objects/Categorias.php");
 require_once("../objects/Funcionarios.php");
 require_once("../objects/Treinamentos.php");
+require_once("../objects/Empresas.php");
 require_once("../objects/Turmas.php");
 require_once("../objects/Turmas_has_Funcionarios.php");
 require_once("../objects/Acompanhamento_Turmas.php");
@@ -47,10 +48,10 @@ require_once("../objects/Acompanhamento_Turmas.php");
                 unset($_POST['idCategoria']);
             }
         }
-        if(isset($_POST['idEmpresa'])){
-            if(setEmpresasExcluir($_POST['idEmpresa'])){
+        if(isset($_POST['idempresa'])){
+            if(setEmpresasExcluir($_POST['idempresa'])){
                 echo "<div class='alert alert-success' role='alert'>Empresa apagada!</div>";
-                unset($_POST['idEmpresa']);
+                unset($_POST['idempresa']);
             }
         }
 

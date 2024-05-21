@@ -19,8 +19,11 @@ $searchColumn = isset($_GET['searchColumn']) ? $conn->real_escape_string($_GET['
 
 // Define a coluna para a pesquisa
 $columnMap = [
-    'Nome' => 'Empresas.Nome',
-    'IdEmpresas' => 'Empresas.idEmpresa',
+    'idTurma' => 'Turmas.idTurma',
+    'idEmpresa' => 'Empresas.idEmpresa',
+    'idTreinamento' => 'Treinamentos.idTreinamento',
+    'TreinamentoNome' => 'Treinamentos.Nome',
+    'EmpresasNome' => 'Empresas.Nome',
 ];
 $searchColumnSql = isset($columnMap[$searchColumn]) ? $columnMap[$searchColumn] : '';
 
@@ -30,40 +33,86 @@ $items_per_page = 15;
 $offset = ($page - 1) * $items_per_page;
 
 // Monta a query SQL para contar o total de funcionários no banco de dados
-$sql_count = "SELECT COUNT(*) as total
-              FROM Empresas";
+$sql_count = "SELECT COUNT(*) AS total
+FROM turmas
+INNER JOIN Treinamentos 
+    ON turmas.Treinamentos_idTreinamento = Treinamentos.idTreinamento
+INNER JOIN Empresas 
+    ON turmas.Empresas_idEmpresa = Empresas.idEmpresa";
 if ($search && $searchColumnSql) {
     $sql_count .= " WHERE $searchColumnSql LIKE '%$search%'";
 } elseif ($search) {
-    $sql_count .= " WHERE empresas.idEmpresa = '$search'";
+    $sql_count .= " WHERE treinamentos.Nome LIKE '%$search%' OR treinamentos.idTreinamento LIKE '%$search%' OR Empresas.idEmpresa LIKE '%$search%' OR Empresas.Nome LIKE '%$search%'";
 }
 
-// Executa a query SQL para contar o total de Categorias
+// Executa a query SQL para contar o total de funcionários
 $result_count = $conn->query($sql_count);
 $total_items = $result_count->fetch_assoc()['total'];
 $total_pages = ceil($total_items / $items_per_page);
 
-// Monta a query SQL para buscar os funcionários no banco de dados com limite e offset
-$sql = "SELECT * FROM Empresas";
+// Monta a query SQL para contar o total de registros no banco de dados
+$sql_count = "SELECT COUNT(*) AS total
+FROM turmas
+INNER JOIN Treinamentos 
+    ON turmas.Treinamentos_idTreinamento = Treinamentos.idTreinamento
+INNER JOIN Empresas 
+    ON turmas.Empresas_idEmpresa = Empresas.idEmpresa";
+
+if ($search && $searchColumnSql) {
+    $sql_count .= " WHERE $searchColumnSql LIKE '%$search%'";
+} elseif ($search) {
+    $sql_count .= " WHERE Turmas.idTurma LIKE '%$search%' OR Empresas.idEmpresa LIKE '%$search%' OR Treinamentos.idTreinamento LIKE '%$search%' OR Treinamentos.Nome LIKE '%$search%' OR Empresas.Nome LIKE '%$search%'";
+}
+
+// Executa a query SQL para contar o total de registros
+$result_count = $conn->query($sql_count);
+$total_items = $result_count->fetch_assoc()['total'];
+$total_pages = ceil($total_items / $items_per_page);
+
+// Monta a query SQL para buscar os registros no banco de dados com limite e offset
+$sql = "SELECT 
+turmas.idTurma,
+turmas.Data_Realizacao,
+turmas.Data_Validade,
+turmas.Comprovacao,
+turmas.Modalidade,
+turmas.Carga_Horaria,
+turmas.Preco_Unitario,
+turmas.Curso_Pago,
+turmas.Instrutor,
+empresas.idEmpresa,
+empresas.Nome AS empresa_nome,
+treinamentos.idTreinamento,
+treinamentos.Nome AS treinamento_nome,
+treinamentos.Descricao
+FROM 
+turmas
+INNER JOIN 
+empresas ON turmas.Empresas_idEmpresa = empresas.idEmpresa
+INNER JOIN 
+treinamentos ON turmas.Treinamentos_idTreinamento = treinamentos.idTreinamento
+";
+
 if ($search && $searchColumnSql) {
     $sql .= " WHERE $searchColumnSql LIKE '%$search%'";
 } elseif ($search) {
-    $sql .= " WHERE empresas.idEmpresa = '$search'";
+    $sql .= " WHERE Turmas.idTurma LIKE '%$search%' OR Empresas.idEmpresa LIKE '%$search%' OR Treinamentos.idTreinamento LIKE '%$search%' OR Treinamentos.Nome LIKE '%$search%' OR Empresas.Nome LIKE '%$search%'";
 }
 $sql .= " LIMIT $items_per_page OFFSET $offset";
 
 // Executa a query SQL
 $result = $conn->query($sql);
 
+
 // Verifica se houve erro na execução da query
 if ($result === false) {
     echo "Erro na consulta: " . $conn->error;
-    $categorias = [];
+    $HistoricoTreinamentos = [];
 } else {
-    $categorias = [];
+    $HistoricoTreinamentos = [];
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $categorias[] = $row;
+            $HistoricoTreinamentos[] = $row;
         }
     }
 }
@@ -77,7 +126,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Empresas</title>
+    <title>Lista de Turmas</title>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -167,7 +216,7 @@ $conn->close();
 <body>
     <div class="container">
         <div class="header">
-            <h1>Cadastro de Empresas - Alpha</h1>
+            <h1>Cadastro de Turmas - Alpha</h1>
             <div class="toolbar">
                 <button class="btn" onclick="abrirPopupIncluir()">Incluir</button>
                 <button class="btn" onclick="realizarAcao('alterar')">Alterar</button>
@@ -177,8 +226,9 @@ $conn->close();
                     <input type="text" name="search" placeholder="Pesquisar" class="search-bar" value="<?php echo htmlspecialchars($search); ?>">
                     <select name="searchColumn" class="search-column">
                         <option value="">Todas as colunas</option>
-                        <option value="idEmpresa" <?php echo $searchColumn == 'idEmpresa' ? 'selected' : ''; ?>>IdEmpresa</option>
-                        <option value="Nome" <?php echo $searchColumn == 'Nome' ? 'selected' : ''; ?>>Nome</option>
+                        <option value="nome" <?php echo $searchColumn == 'nome' ? 'selected' : ''; ?>>Nome</option>
+                        <option value="cpf" <?php echo $searchColumn == 'cpf' ? 'selected' : ''; ?>>CPF</option>
+                        <option value="categoria" <?php echo $searchColumn == 'categoria' ? 'selected' : ''; ?>>Categoria</option>
                     </select>
                     <button type="submit" class="btn">Filtrar</button>
                 </form>
@@ -189,25 +239,38 @@ $conn->close();
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nome</th>
+                    <th>Empresa Ministrante</th>
+                    <th>Nome do Treinamento</th>
+                    <th>Instrutor</th>
+                    <th>Data da Criação</th>
+                    <th>Data de Vencimento</th>
+                    <th>Comprovacao</th>
+                    <th>Modalidade</th>
+                    <th>Carga Horária</th>
+                    <th>Preço Unitário</th>
+                    <th>Curso Pago?</th>
                 </tr>
             </thead>
             <tbody>
-                <?php if (count($categorias) > 0): ?>
-                    <!-- Se houver funcionários, percorre cada um deles -->
-                    <?php foreach ($categorias as $categoria): ?>
-                        <!-- Para cada funcionário, cria uma linha na tabela -->
-                        <tr data-idempresa="<?php echo htmlspecialchars($categoria['idEmpresa']); ?>">
-                            <!-- Exibe a categoria do funcionário -->
-                            <td><?php echo htmlspecialchars($categoria['idEmpresa']); ?></td>
-                            <!-- Exibe a categoria do funcionário -->
-                            <td><?php echo htmlspecialchars($categoria['Nome']); ?></td>
-                            <!-- Exibe o nome do funcionário -->
+                <?php if (count($HistoricoTreinamentos) > 0): ?>
+                    <?php foreach ($HistoricoTreinamentos as $HistoricoTreinamento): ?>
+                        <tr data-idHistoricoTreinamento="<?php echo htmlspecialchars($HistoricoTreinamento['idTurma']); ?>">
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['idTurma']); ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['empresa_nome']); ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['treinamento_nome']); ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['Instrutor']); ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['Data_Realizacao']); ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['Data_Validade']); ?></td>
+                            <td><?php echo $HistoricoTreinamento['Comprovacao'] == 1 ? 'SIM' : 'NÃO'; ?></td>
+                            <td><?php echo $HistoricoTreinamento['Modalidade'] == 1 ? 'Presencial' : 'Online'; ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['Carga_Horaria']); ?></td>
+                            <td><?php echo htmlspecialchars($HistoricoTreinamento['Preco_Unitario']); ?></td>
+                            <td><?php echo $HistoricoTreinamento['Curso_Pago'] == 1 ? 'SIM' : 'NÃO'; ?></td>
                         </tr>
-                    <?php endforeach; ?>    
-                    <?php else: ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
                     <tr>
-                        <td colspan="4">Nenhum resultado encontrado</td>
+                        <td colspan="14" style="text-align: center;">Nenhum resultado encontrado</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -235,7 +298,7 @@ $conn->close();
     </div>
     <script>
     function abrirPopupIncluir() {
-        var url = "CadastroEmpresa.php";
+        var url = "CadastroTurma.php";
         var largura = 600;
         var altura = 400;
         var esquerda = (screen.width - largura) / 2;
@@ -246,24 +309,24 @@ $conn->close();
     function realizarAcao(acao) {
     var selectedRow = document.querySelector('.employee-table tr.selected');
     if (selectedRow) {
-        var idEmpresa = selectedRow.getAttribute('data-idempresa');
+        var idHistoricoTreinamento = selectedRow.getAttribute('data-idHistoricoTreinamento');
         var url = "";
 
         if (acao === 'alterar') {
-            url = "AlterarEmpresa.php?idEmpresa=" + idEmpresa;
+            url = "AlterarTurma.php?idTurma=" + idHistoricoTreinamento;
         } else if (acao === 'visualizar') {
-            url = "VisualizarEmpresa.php?idEmpresa=" + idEmpresa;
+            url = "VisualizarTurma.php?idTurma=" + idHistoricoTreinamento;
         } else if (acao === 'apagar') {
-            if (confirm("Tem certeza que deseja apagar esta Empresa?")) {
+            if (confirm("Tem certeza que deseja apagar este histórico de treinamento?")) {
                 var form = document.createElement('form');
                 form.method = 'POST';
                 form.action = 'Apagar.php';
 
-                // Cria um campo de input para o idCategoria
+                // Cria um campo de input para o idHistoricoTreinamento
                 var input = document.createElement('input');
                 input.type = 'hidden';
-                input.name = 'idempresa';
-                input.value = idEmpresa;
+                input.name = 'idHistoricoTreinamento';
+                input.value = idHistoricoTreinamento;
 
                 form.appendChild(input);
                 document.body.appendChild(form);
@@ -304,7 +367,7 @@ $conn->close();
         });
 
         var selected_id = "<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>";
-        var selectedRow = document.querySelector('.employee-table tr[data-idempresa="' + selected_id + '"]');
+        var selectedRow = document.querySelector('.employee-table tr[data-cpf="' + selected_id + '"]');
         if (selectedRow) {
             selectedRow.classList.add('selected');
         }

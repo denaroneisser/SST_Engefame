@@ -189,6 +189,7 @@ $conn->close();
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
+                    <th>Subtitulo</th>
                     <th>Descrição</th>
                 </tr>
             </thead>
@@ -200,6 +201,7 @@ $conn->close();
                         <tr data-idtreinamento="<?php echo htmlspecialchars($treinamento['idTreinamento']); ?>">
                             <td><?php echo htmlspecialchars($treinamento['idTreinamento']); ?></td>
                             <td><?php echo htmlspecialchars($treinamento['Nome']); ?></td>
+                            <td><?php echo htmlspecialchars($treinamento['Subtitulo']); ?></td>
                             <td><?php echo htmlspecialchars($treinamento['Descricao']); ?></td>
                         </tr>
                     <?php endforeach; ?>    

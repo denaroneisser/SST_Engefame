@@ -15,7 +15,7 @@ require_once("../objects/Funcionarios.php");
 <body>
     <?php
     if(isset($_GET["cpf"])){
-    $funcionario =GetFuncionarioByCPF($_GET["cpf"]);
+    $funcionario =GetFuncionariosByCPF($_GET["cpf"]);
     }else{
     //FAZER FUNÇÃO DE VOLTAR A PAGINA ANTERIOR
     }
@@ -69,7 +69,7 @@ require_once("../objects/Funcionarios.php");
     
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $resultado = setFuncionarioAlterar($_POST['nome'],$_POST['cpf'],$_POST['situacao'],$_POST['categoria']);
+        $resultado = setFuncionariosAlterar($_POST['nome'],$_POST['cpf'],$_POST['situacao'],$_POST['categoria']);
             if($resultado==true){
                 echo("<script>alert('Usuário alterado com Sucesso!');</script>");
                 echo("<script>window.close();</script>");

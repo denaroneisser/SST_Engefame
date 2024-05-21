@@ -9,6 +9,7 @@ Funções de GET/SET para a Tabela Treinamentos
 
 @Tabela T_idTreinamento          Auto Increment.
         T_Nome                  Nome do Treinamento.
+        T_Subtitulo             Subtitulo do Treinamento.
         T_Descricao             Descrição do Treinamento.
 @Tabela
 /*/
@@ -17,15 +18,16 @@ Funções de GET/SET para a Tabela Treinamentos
 
 
 //FUNÇÃO DE INCLUIR TREINAMENTO NO BANCO DE DADOS
-function setTreinamentos($T_Nome,$T_Descricao){
+function setTreinamentos($T_Nome,$T_Subtitulo,$T_Descricao){
 //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O INSERT PARA INCLUIR CATEGORIA
-    $setTreinamentoSQL_Insert = "INSERT INTO Treinamentos (Nome,Descricao) VALUES (?,?)";
+    $setTreinamentoSQL_Insert = "INSERT INTO Treinamentos (Nome,Subtitulo,Descricao) VALUES (?,?,?)";
     $setTreinamentoStament_Insert = $pdo->prepare($setTreinamentoSQL_Insert); 
      // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
      $setTreinamentoStament_Insert->bindParam(1, $T_Nome);
-     $setTreinamentoStament_Insert->bindParam(2, $T_Descricao);
+     $setTreinamentoStament_Insert->bindParam(2, $T_Subtitulo);
+     $setTreinamentoStament_Insert->bindParam(3, $T_Descricao);
     // EXECUTANDO O SQL
         try {
             $setTreinamentoStament_Insert->execute(); 
@@ -41,16 +43,17 @@ function setTreinamentos($T_Nome,$T_Descricao){
 
 
 //FUNÇÃO DE ALTERAR TREINAMENTO NO BANCO DE DADOS
-function setTreinamentosAlterar($T_idCategoria,$T_Nome,$T_Descricao){
+function setTreinamentosAlterar($T_idCategoria,$T_Nome,$T_Subtitulo,$T_Descricao){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
         require "Conexao.php";
                 // CRIANDO O INSERT PARA INCLUIR CATEGORIA
-                $setAlterarCategoriaSQL = "UPDATE Treinamentos SET Nome=?,Descricao=? WHERE idTreinamento= ?";
+                $setAlterarCategoriaSQL = "UPDATE Treinamentos SET Nome=?,Subtitulo=?,Descricao=? WHERE idTreinamento= ?";
                 $setAlterarCategoriaStament = $pdo->prepare($setAlterarCategoriaSQL); 
                 // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
                 $setAlterarCategoriaStament->bindValue(1, $T_Nome,PDO::PARAM_STR); 
-                $setAlterarCategoriaStament->bindValue(2, $T_Descricao,PDO::PARAM_STR);
-                $setAlterarCategoriaStament->bindValue(3, $T_idCategoria,PDO::PARAM_INT); 
+                $setAlterarCategoriaStament->bindValue(2, $T_Subtitulo,PDO::PARAM_STR);
+                $setAlterarCategoriaStament->bindValue(3, $T_Descricao,PDO::PARAM_STR);
+                $setAlterarCategoriaStament->bindValue(4, $T_idCategoria,PDO::PARAM_INT); 
                 // EXECUTANDO O SQL
                 try {
                     $setAlterarCategoriaStament->execute(); 

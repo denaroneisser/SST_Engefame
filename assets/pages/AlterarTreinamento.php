@@ -13,7 +13,7 @@ require_once("../objects/Treinamentos.php");
 <body>
     <?php
     if(isset($_GET["idTreinamento"])){
-    $treinamento =GetTreinamentoById($_GET["idTreinamento"]);
+    $treinamento =GetTreinamentosById($_GET["idTreinamento"]);
     }else{
     //FAZER FUNÇÃO DE VOLTAR A PAGINA ANTERIOR
     }
@@ -31,6 +31,10 @@ require_once("../objects/Treinamentos.php");
                 <input type="text" id="nome" name="nome" value ="<?php if(Isset($treinamento['Nome'])){echo $treinamento['Nome']; }else{ echo "Erro ao Trazer Dados";} ?>" required maxlength="45">
             </div>
             <div class="form-group">
+                <label for="nome">Subtitulo</label>
+                <textarea id="subtitulo" name="subtitulo" required  rows="1" cols="40" maxlength="100"><?php if(Isset($treinamento['Subtitulo'])){echo $treinamento['Subtitulo']; }else{ echo "Erro ao Trazer Dados";} ?></textarea>
+            </div>
+            <div class="form-group">
                 <label for="nome">Descrição</label>
                 <textarea id="Descricao" name="descricao" required  rows="4" cols="40" maxlength="200"><?php if(Isset($treinamento['Descricao'])){echo $treinamento['Descricao']; }else{ echo "Erro ao Trazer Dados";} ?></textarea>
             </div>
@@ -42,9 +46,9 @@ require_once("../objects/Treinamentos.php");
     
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $resultado = setTreinamentoAlterar($_POST['idtreinamento'],$_POST['nome'],$_POST['descricao']);
+        $resultado = setTreinamentosAlterar($_POST['idtreinamento'],$_POST['nome'],$_POST['subtitulo'],$_POST['descricao']);
             if($resultado==true){
-                echo("<script>alert('Treinamento alterada com Sucesso!');</script>");
+                echo("<script>alert('Treinamento alterado com Sucesso!');</script>");
                 echo("<script>window.close();</script>");
             }else{
                 echo("<script>alert('FALHA ao alterar Treinamento!');</script>");

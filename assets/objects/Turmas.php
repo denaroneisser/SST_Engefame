@@ -29,7 +29,7 @@ function setTurmas($T_Empresas_IdEmpresa,$T_Treinamentos_idTreinamento,$T_Instru
 //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O INSERT PARA INCLUIR TURMA
-    $setTurmasSQL = "INSERT INTO Turmas (idTurma,Empresas_idEmpresa,Treinamentos_idTreinamento,Data_Realizacao,Data_Validade,Comprovacao,Modalidade,Carga_Horaria,Preco_Unitario,Curso_Pago) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    $setTurmasSQL = "INSERT INTO Turmas (Empresas_idEmpresa,Treinamentos_idTreinamento,Data_Realizacao,Data_Validade,Comprovacao,Modalidade,Carga_Horaria,Preco_Unitario,Curso_Pago) VALUES (?,?,?,?,?,?,?,?,?)";
     $setTurmasStament = $pdo->prepare($setTurmasSQL); 
      // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
      $setTurmasStament->bindParam(1, $T_Empresas_IdEmpresa);
