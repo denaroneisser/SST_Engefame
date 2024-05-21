@@ -43,7 +43,7 @@ function setEmpresasAlterar($E_Nome,$E_idEmpresa){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
         require "Conexao.php";
                 // CRIANDO O INSERT PARA ALTERAR EMPRESA
-                $setAlterarEmpresaSQL = "UPDATE Empresas SET Nome=? WHERE idEmpresas= ?";
+                $setAlterarEmpresaSQL = "UPDATE Empresas SET Nome=? WHERE idEmpresa= ?";
                 $setAlterarEmpresaStament = $pdo->prepare($setAlterarEmpresaSQL); 
                 // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
                 $setAlterarEmpresaStament->bindValue(1, $E_Nome,PDO::PARAM_STR); 
@@ -66,7 +66,7 @@ Function GetEmpresasById($E_idEmpresa){
     //INCLUIR CÓDIGO DE CONEXÃO COM BANCO DE DADOS
     require "Conexao.php";
     // CRIANDO O SELECT PARA CONSULTAR EXISTENCIA NO SISTEMA
-    $GetEmpresaByIdSQL = "SELECT * FROM Empresas WHERE idEmpresas = ?";
+    $GetEmpresaByIdSQL = "SELECT * FROM Empresas WHERE idEmpresa = ?";
     $GetEmpresaByIdStament = $pdo->prepare($GetEmpresaByIdSQL); 
     // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
     $GetEmpresaByIdStament->bindValue(1,$E_idEmpresa);
@@ -76,7 +76,7 @@ Function GetEmpresasById($E_idEmpresa){
       $GetEmpresaByIdStament->execute(); 
       //TRANSFORMANDO SQL EXECUTADA EM UM OBJETO ARRAY
       $GetEmpresaByIdObject = $GetEmpresaByIdStament->fetch(PDO::FETCH_ASSOC);
-     return $GGetEmpresaByIdObject;
+     return $GetEmpresaByIdObject;
 
      }catch (PDOException $e) {
       echo "Erro PDO: " . $e->getMessage();
@@ -131,7 +131,7 @@ Function GetEmpresasALL(){
 Function setEmpresasExcluir($E_idEmpresa){
     require "Conexao.php";
     // CRIANDO O SELECT PARA EXCLUIR EXISTENCIA DO NOME NO SISTEMA
-    $setEmpresaExcluirSQL = "DELETE FROM Empresas WHERE idEmpresas= ? ";
+    $setEmpresaExcluirSQL = "DELETE FROM Empresas WHERE idEmpresa= ? ";
     $setEmpresaExcluirStament = $pdo->prepare($setEmpresaExcluirSQL); 
     // SUBSTITUINDO O VALOR ? DO SQL PELA VARIAVEL
     $setEmpresaExcluirStament->bindValue(1, $E_idEmpresa, PDO::PARAM_INT);

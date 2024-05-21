@@ -27,7 +27,7 @@ require_once("../objects/categorias.php");
 <?php
 require_once("../objects/categorias.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-$resultado = setCategoria($_POST['nome']);
+$resultado = setCategorias($_POST['nome']);
  if($resultado== true){
     echo("<script>alert('Categoria de Funcionário Cadastrada');</script>");
  

@@ -13,7 +13,7 @@ require_once("../objects/Categorias.php");
 <body>
     <?php
     if(isset($_GET["idCategoria"])){
-    $categoria =GetCategoriaById($_GET["idCategoria"]);
+    $categoria =GetCategoriasById($_GET["idCategoria"]);
     }else{
     //FAZER FUNÇÃO DE VOLTAR A PAGINA ANTERIOR
     }
@@ -38,7 +38,7 @@ require_once("../objects/Categorias.php");
     
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $resultado = setCategoriaAlterar($_POST['nome'],$_POST['idcategoria']);
+        $resultado = setCategoriasAlterar($_POST['nome'],$_POST['idcategoria']);
             if($resultado==true){
                 echo("<script>alert('Categoria alterada com Sucesso!');</script>");
                 echo("<script>window.close();</script>");
